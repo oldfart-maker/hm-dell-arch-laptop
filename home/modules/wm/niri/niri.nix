@@ -1,8 +1,8 @@
 { config, lib, repoPath, ... }:
 
 let
-  cfgPath  = repoPath "home/data/apps/niri/config.kdl"
-  keysPath = repoPath "home/data/apps/niri/keybindings.txt"
+  cfgPath  = repoPath "home/data/apps/niri/config.kdl";
+  keysPath = repoPath "home/data/apps/niri/keybindings.txt";
 in
 {
   # Use home.file so outputs appear under result/home-files
