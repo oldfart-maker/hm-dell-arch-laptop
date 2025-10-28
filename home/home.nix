@@ -28,8 +28,6 @@
     ./modules/wm/niri/niri-data.nix
     ./modules/wm/niri/waybar.nix
     ./modules/wm/niri/rofi.nix
-
-    ./modules/wm/sway/sway.nix
   ];
 
   programs.home-manager.enable = true;  
