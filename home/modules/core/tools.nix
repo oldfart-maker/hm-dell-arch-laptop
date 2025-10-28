@@ -1,4 +1,4 @@
-# home/modules/tools.nix
+# home/modules/core/tools.nix
 { config, repoPath, ... }:
 {
   home.file.".local/bin/hm-update" = {
