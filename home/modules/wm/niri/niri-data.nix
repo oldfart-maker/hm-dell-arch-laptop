@@ -2,8 +2,7 @@
 { config, lib, repoPath, ... }:
 
 let
-  # Paths in your repo
-  niriRoot   = repoPath "home/data/apps/niri;
+  niriRoot   = repoPath "home/data/apps/niri";
   scriptsDir = niriRoot + "/scripts";
   rofiDir    = niriRoot + "/rofi";
 
