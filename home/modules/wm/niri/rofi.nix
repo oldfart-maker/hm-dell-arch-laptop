@@ -1,4 +1,4 @@
-# modules/rofi-colors-compat.nix
+# modules/rofi.nix
 { config, pkgs, lib, ... }:
 
 let
