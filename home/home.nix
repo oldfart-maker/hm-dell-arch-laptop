@@ -21,7 +21,7 @@
     ./modules/core/dev-tools.nix    
     ./modules/tools/tools.nix
 
-    ./modules/apps/make/mako.nix
+    ./modules/apps/mako.nix
     ./modules/apps/emacs.nix
     
     ./modules/wm/niri/niri.nix
