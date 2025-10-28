@@ -26,15 +26,14 @@ in
   ];
 
   # Copy committed config into ~/.config/emacs-prod (reproducible)
-  home.file."${emacsDir}/init.el".source    = srcInit;
-  home.file."${emacsDir}/modules".source    = srcModules;
-  home.file."${emacsDir}/modules".recursive = true;
+  home.file."${emacsDir}/early-init.el".source    = srcEarly;
+  home.file."${emacsDir}/init.el".source          = srcInit;
 
-  # early-init is optional
-  home.file."${emacsDir}/early-init.el" = lib.mkIf (builtins.pathExists srcEarly) {
-    source = srcEarly;
+  home.file."${emacsDir}/modules" = {
+    source    = srcModules;
+    recursive = true;
   };
-
+  
   # Emacs daemon using that init directory
   systemd.user.services.emacs-prod = {
     Unit = {
