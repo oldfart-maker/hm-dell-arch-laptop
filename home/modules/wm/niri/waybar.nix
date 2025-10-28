@@ -1,4 +1,4 @@
-# modules/waybar-niri.nix
+# modules/waybar.nix
 { config, pkgs, lib, ... }:
 
 let
