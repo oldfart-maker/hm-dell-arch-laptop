@@ -1,5 +1,5 @@
 # home/modules/tools.nix
-{ config, repoPath ... }:
+{ config, repoPath, ... }:
 {
   # Ensure ~/.local/bin exists and script is linked, executable
   home.file.".local/bin/hm-update" = {
