@@ -2,7 +2,7 @@
 # tangle-sync.sh — host-side helper to:
 #   1) pull/update babel repos (niri + emacs)
 #   2) tangle via batch Emacs (no init)
-#   3) copy outputs into sysclonev5/generated/
+#   3) copy outputs into hm-pi5-arch-pi/data/apps
 #   4) commit if changed
 #
 # Usage:
@@ -11,7 +11,7 @@
 #   tools/tangle-sync.sh --emacs
 #
 # Env:
-#   SYSCLONE_REPO  (default: $HOME/projects/sysclonev5)
+#   REPO           (default: $HOME/projects/)
 #   NIRI_SRC_DIR   (default: $HOME/projects/niri_babel_config)
 #   EMACS_SRC_DIR  (default: $HOME/projects/emacs_babel_config)
 #   NIRI_GIT       (default: git@github.com:oldfart-maker/niri_babel_config.git)
@@ -22,7 +22,7 @@
 set -Eeuo pipefail
 
 # --- defaults -------------------------------------------------------------
-SYSCLONE_REPO="${SYSCLONE_REPO:-$HOME/projects/sysclonev5}"
+REPO="${REPO:-$HOME/projects/hm-pi5-arch-pi}"
 
 NIRI_SRC_DIR="${NIRI_SRC_DIR:-$HOME/projects/niri_babel_config}"
 EMACS_SRC_DIR="${EMACS_SRC_DIR:-$HOME/projects/emacs_babel_config}"
@@ -126,12 +126,12 @@ ELISP
 }
 
 # --- ensure repos are present / up to date -------------------------------
-ensure_repo "$SYSCLONE_REPO"
+ensure_repo "$REPO"
 $want_niri  && ensure_repo "$NIRI_SRC_DIR"  "$NIRI_GIT"
 $want_emacs && ensure_repo "$EMACS_SRC_DIR" "$EMACS_GIT"
 
-mkdir -p "$SYSCLONE_REPO/home/generated/niri" \
-         "$SYSCLONE_REPO/home/generated/emacs/modules"
+mkdir -p "$REPO/home/data/apps/niri" \
+         "$REPO/home/data/apps/emacs/modules"
 
 # --- Niri ----------------------------------------------------------------
 if $want_niri; then
@@ -143,13 +143,13 @@ if $want_niri; then
   # copy outputs
   if [[ -f "$NIRI_SRC_DIR/config.kdl" ]]; then
     install -m 0644 "$NIRI_SRC_DIR/config.kdl" \
-      "$SYSCLONE_REPO/home/generated/niri/config.kdl"
+      "$REPO/home/data/apps/niri/config.kdl"
   else
     echo "ERROR: niri tangle produced no config.kdl" >&2; exit 1
   fi
   if [[ -f "$NIRI_SRC_DIR/key_bindings.txt" ]]; then
     install -m 0644 "$NIRI_SRC_DIR/key_bindings.txt" \
-      "$SYSCLONE_REPO/home/generated/niri/key_bindings.txt"
+      "$REPO/home/data/apps/niri/key_bindings.txt"
   fi
   popd >/dev/null
 fi
@@ -163,25 +163,37 @@ if $want_emacs; then
 
   # copy outputs
   [[ -f "early-init.el" ]] && install -m 0644 "early-init.el" \
-      "$SYSCLONE_REPO/home/generated/emacs/early-init.el"
+      "$REPO/home/data/apps/emacs/early-init.el"
   [[ -f "init.el" ]] && install -m 0644 "init.el" \
-      "$SYSCLONE_REPO/home/generated/emacs/init.el"
+      "$REPO/home/data/apps/emacs/init.el"
   if compgen -G "modules/*.el" >/dev/null; then
-    rsync -a --delete "modules/" "$SYSCLONE_REPO/home/generated/emacs/modules/"
+    rsync -a --delete "modules/" "$REPO/home/data/apps/emacs/modules/"
   fi
   popd >/dev/null
 fi
 
 # --- Commit if changed ---------------------------------------------------
-log "sysclonev5: commit if home/generated/ changed"
-pushd "$SYSCLONE_REPO" >/dev/null
-if ! git diff --quiet -- generated; then
-  git add generated
+pushd "$REPO" >/dev/null
+
+git add -A home/data/apps/niri
+git add -A home/data/apps/emacs
+
+if ! git diff --cached --quiet -- home/generated; then
   git commit -m "tangle-sync: update generated configs"
-  echo "Committed. Push with: git -C \"$SYSCLONE_REPO\" push"
+
+  # Push (set upstream if needed)
+  branch="$(git rev-parse --abbrev-ref HEAD)"
+  if git rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1; then
+    git push
+  else
+    git push -u origin "$branch"
+  fi
+
+  echo "Committed & pushed."
 else
-  echo "No changes in home/generated/; nothing to commit."
+  echo "No changes in either emacs/niri configs, nothing to commit."
 fi
+
 popd >/dev/null
 
 log "done."
