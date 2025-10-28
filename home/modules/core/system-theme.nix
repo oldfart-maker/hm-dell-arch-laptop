@@ -5,7 +5,7 @@
     enable = true;
     
     # base16Scheme = "${pkgs.base16-schemes}/share/themes/chalk.yaml";
-    image = repoPath "assets/wallpapers/default.jpg";    
+    image = repoPath "home/data/wallpapers/default.jpg";    
     polarity = "dark";
 
     cursor = {
