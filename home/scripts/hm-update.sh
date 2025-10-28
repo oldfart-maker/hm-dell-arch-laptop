@@ -13,10 +13,10 @@
 set -Eeuo pipefail
 
 ### --- CONFIG (edit to taste) ---
-repo="${HOME}/projects/sysclonev5"                    # canonical repo path
+repo="${HOME}/projects/hm-pi5-arch-pi"
 branch_default="main"
-local_flake="path:${repo}/home#username"             # your HM flake entry
-remote_flake="github:oldfart-maker/sysclonev5?dir=home&ref=main#username"
+local_flake="path:${repo}/#username"
+remote_flake="github:oldfart-maker/hm-pi5-arch-pi?ref=main#username"
 ### --------------------------------
 
 usage() {
@@ -65,8 +65,8 @@ if [[ "$mode" == "remote" ]]; then
 fi
 
 # Local/ Pull modes require the repo
-if [[ ! -f "${repo}/home/flake.nix" ]]; then
-  echo "[hm-update] ERROR: ${repo}/home/flake.nix not found." >&2
+if [[ ! -f "${repo}/flake.nix" ]]; then
+  echo "[hm-update] ERROR: ${repo}/flake.nix not found." >&2
   exit 3
 fi
 
