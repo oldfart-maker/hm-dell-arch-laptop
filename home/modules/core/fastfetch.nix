@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, repoPath, lib, ... }:
 
 let
   cfgPath  = repoPath "home/data/apps/fastfetch/config.jsonc";
