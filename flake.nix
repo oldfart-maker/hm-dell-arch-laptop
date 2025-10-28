@@ -9,7 +9,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Prefer the canonical repo; follows nixpkgs for consistency
     stylix = {
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,10 +28,8 @@
           ./home/home.nix
         ];
 
-        # Make flake root available to all modules, so you can do:
-        #   inputs.self + "/home/data/…"
         extraSpecialArgs = {
-          inherit self stylix repoPath;
+          inherit self stylix paths;
           inputs = { inherit self stylix nixpkgs home-manager; };
         };
       };
