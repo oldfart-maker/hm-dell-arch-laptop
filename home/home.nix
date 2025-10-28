@@ -8,7 +8,7 @@
   home.packages = with pkgs; [ git ];
 
   imports = [
-    ./modules/bin/paths.nix
+    ./modules/lib/paths.nix
     
     ./modules/core/user-dirs.nix    
     ./modules/core/system-theme.nix
