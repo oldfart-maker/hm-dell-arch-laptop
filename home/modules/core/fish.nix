@@ -33,10 +33,4 @@ in
     recursive = true;
     force     = true;
   };
-
-  home.file.".config/fish/functions" = lib.mkIf (builtins.pathExists funcsDir) {
-    source    = funcsDir;
-    recursive = true;
-    force     = true;
-  };
 }
