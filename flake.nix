@@ -18,7 +18,7 @@
 
   outputs = { self, nixpkgs, home-manager, stylix, ... }:
   let
-    system = builtins.currentSystem;
+    system = builtins.currentSystem or "aarch64-linux";    
     pkgs = nixpkgs.legacyPackages.${system};
   in {
     homeConfigurations.username =
