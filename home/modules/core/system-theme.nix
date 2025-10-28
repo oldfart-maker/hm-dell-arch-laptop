@@ -20,7 +20,6 @@
       foot.enable = false;
       fish.enable = false;
       mako.enable = false;
-      opencode.enable = false;
     };
   };
 }
