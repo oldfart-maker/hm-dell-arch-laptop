@@ -1,9 +1,8 @@
 # home/modules/fish.nix
-{ config, pkgs, lib, ... }:
+{ config, pkgs, repoPath, lib, ... }:
 
 let
-  confdDir = ../dotfiles/fish/conf.d;
-  funcsDir = ../dotfiles/fish/functions;
+  confdDir = repoPath "/home/data/apps/fish/conf.d";
 in
 {
   programs.fish = {
