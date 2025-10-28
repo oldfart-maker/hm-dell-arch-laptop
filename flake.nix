@@ -32,7 +32,8 @@
         # Make flake root available to all modules, so you can do:
         #   inputs.self + "/home/data/…"
         extraSpecialArgs = {
-          inherit self system;
+          inherit self stylix repoPath;
+          inputs = { inherit self stylix nixpkgs home-manager; };
         };
       };
   };
