@@ -12,7 +12,7 @@ in
     force  = true;
   };
 
-  xdg.configFile."fastfetch/logo" = lib.mkIf (builtins.pathExists logoPath) 
+  xdg.configFile."fastfetch/logo" = lib.mkIf (builtins.pathExists logoPath) {
     source    = logoPath;
     recursive = true;
     force     = true;
