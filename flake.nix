@@ -19,6 +19,7 @@
   let
     system = builtins.currentSystem or "aarch64-linux";    
     pkgs = nixpkgs.legacyPackages.${system};
+    repoPath = rel: "${self}/${rel}";
   in {
     homeConfigurations.username =
       home-manager.lib.homeManagerConfiguration {
