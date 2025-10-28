@@ -29,7 +29,7 @@
         ];
 
         extraSpecialArgs = {
-          inherit self stylix paths;
+          inherit self stylix repoPath;
           inputs = { inherit self stylix nixpkgs home-manager; };
         };
       };
