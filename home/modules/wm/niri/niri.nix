@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, repoPath, ... }:
 
 let
   cfgPath  = repoPath "home/data/apps/niri/config.kdl"
