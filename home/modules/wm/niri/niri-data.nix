@@ -1,9 +1,9 @@
 # home/modules/niri-data.nix
-{ config, lib, ... }:
+{ config, lib, repoPath, ... }:
 
 let
   # Paths in your repo
-  niriRoot   = ../dotfiles/niri;
+  niriRoot   = repoPath "home/data/apps/niri;
   scriptsDir = niriRoot + "/scripts";
   rofiDir    = niriRoot + "/rofi";
 
