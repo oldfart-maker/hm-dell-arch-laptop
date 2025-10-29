@@ -171,7 +171,6 @@ seed-layer1-net-bootstrap: ensure-mounted
 seed-layer2-wayland: ensure-mounted ## Wayland/wlroots core + pipewire stack + portal
 	bash seeds/layer2/seed-wayland.sh
 
-
 # ---------------- Layer 2.5: (DM) ----------------
 seed-layer2.5-greetd: ensure-mounted
 	sudo env ROOT_MNT="/mnt/sysclone-root" bash seeds/layer2.5/seed-greetd.sh
