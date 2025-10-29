@@ -144,7 +144,7 @@ in
   home.file."${cfgPath}".text = builtins.toJSON {
     layer = "top";
     position = "top";
-    height = 28;
+    height = 20;
     margin = "6 6 0 6";
     spacing = 8;
 
