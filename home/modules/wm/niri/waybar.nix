@@ -57,12 +57,12 @@ in
     /* ---- global ---- */
     * {
       font-family: "JetBrains Mono", "Symbols Nerd Font", "Noto Color Emoji", monospace, sans-serif;
-      font-size: 10pt;
+      font-size: 8pt;
       color: @fg;
     }
 
     window#waybar {
-      background: alpha(@bg, 0.50);   /* subtle transparency */
+      background: alpha(@bg, 0.50);
       border-radius: 12px;
       padding: 6px;
       box-shadow: 0 8px 24px alpha(@fg, 0.06);
