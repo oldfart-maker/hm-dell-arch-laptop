@@ -178,7 +178,7 @@ pushd "$REPO" >/dev/null
 git add -A home/data/apps/niri
 git add -A home/data/apps/emacs
 
-if ! git diff --cached --quiet -- home/generated; then
+if ! git diff --cached --quiet -- home/data/apps; then
   git commit -m "tangle-sync: update generated configs"
 
   # Push (set upstream if needed)
