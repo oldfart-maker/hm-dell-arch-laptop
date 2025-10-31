@@ -5,6 +5,7 @@ let
   niriRoot   = repoPath "home/data/apps/niri";
   scriptsDir = niriRoot + "/scripts";
   rofiDir    = niriRoot + "/rofi";
+  themeDir   = niriRoot + "/theme";
 
   linkDir = src: target: {
     ${target} = {
@@ -22,5 +23,9 @@ in
 
       (lib.optionalAttrs (builtins.pathExists rofiDir)
         (linkDir rofiDir ".config/niri/rofi"))
+
+      (lib.optionalAttrs (builtins.pathExists themeDir)
+        (linkDir rofiDir ".config/niri/theme"))
+       
     ];
 }
