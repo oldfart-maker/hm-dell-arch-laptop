@@ -25,7 +25,7 @@ in
         (linkDir rofiDir ".config/niri/rofi"))
 
       (lib.optionalAttrs (builtins.pathExists themeDir)
-        (linkDir rofiDir ".config/niri/theme"))
+        (linkDir themeDir ".config/niri/theme"))
        
     ];
 }
