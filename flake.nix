@@ -17,7 +17,8 @@
 
   outputs = { self, nixpkgs, home-manager, stylix, ... }:
   let
-    system = builtins.currentSystem or "aarch64-linux";    
+    # system = builtins.currentSystem or "aarch64-linux";
+    system = builtins.currentSystem or "x86_64-linux";    
     pkgs = nixpkgs.legacyPackages.${system};
     repoPath = rel: "${self}/${rel}";
   in {
