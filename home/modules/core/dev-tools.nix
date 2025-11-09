@@ -15,5 +15,6 @@
     clang-tools
     python3
     jq
+    git
   ];
 }
