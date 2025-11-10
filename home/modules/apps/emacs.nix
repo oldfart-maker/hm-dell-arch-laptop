@@ -5,11 +5,12 @@ let
   emacsPkg = (pkgs.emacs30-pgtk or pkgs.emacs29-pgtk or pkgs.emacs-gtk or pkgs.emacs);
   # emacsPkg =  (pkgs.emacs30 or pkgs.emacs29 or pkgs.emacs-gtk or pkgs.emacs);  
 
-  emacsSrcDir = self + "/home/data/apps/emacs";
-  srcEarly    = emacsSrcDir + "/early-init.el";
-  srcInit     = emacsSrcDir + "/init.el";
-  srcModules  = emacsSrcDir + "/modules"; 
-  emacsDir = "${config.xdg.configHome}/emacs-prod";
+  emacsSrcDir    = self + "/home/data/apps/emacs";
+  srcEarly       = emacsSrcDir + "/early-init.el";
+  srcInit        = emacsSrcDir + "/init.el";
+  srcCustom      = emacsSrcDir + "/custom.el";
+  srcModules     = emacsSrcDir + "/modules"; 
+  emacsDir       = "${config.xdg.configHome}/emacs-prod";
   emacsCommonDir = "${config.xdg.configHome}/emacs-common";
 in
 {
@@ -26,6 +27,7 @@ in
   
   home.file."${emacsDir}/early-init.el".source    = srcEarly;
   home.file."${emacsDir}/init.el".source          = srcInit;
+  home.file."${emacsDir}/custome.el".source       = srcCustom;
 
   home.file."${emacsDir}/modules" = {
     source    = srcModules;
