@@ -8,7 +8,7 @@ let
   emacsSrcDir    = self + "/home/data/apps/emacs";
   srcEarly       = emacsSrcDir + "/early-init.el";
   srcInit        = emacsSrcDir + "/init.el";
-  srcCustom      = emacsSrcDir + "/custom.el";
+  # srcCustom      = emacsSrcDir + "/custom.el";
   srcModules     = emacsSrcDir + "/modules"; 
   emacsDir       = "${config.xdg.configHome}/emacs-prod";
   emacsCommonDir = "${config.xdg.configHome}/emacs-common";
@@ -27,7 +27,7 @@ in
   
   home.file."${emacsDir}/early-init.el".source    = srcEarly;
   home.file."${emacsDir}/init.el".source          = srcInit;
-  home.file."${emacsDir}/custome.el".source       = srcCustom;
+  # home.file."${emacsDir}/custome.el".source       = srcCustom;
 
   home.file."${emacsDir}/modules" = {
     source    = srcModules;
