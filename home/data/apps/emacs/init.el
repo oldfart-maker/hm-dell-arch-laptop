@@ -1,3 +1,9 @@
+;; Workaround for Magit / Emacs 30 bug where `thisfile` is used as a
+;; dynamically-bound variable but never `defvar`'d.
+(defvar thisfile nil
+  "Dummy global used by some Magit autoloads. Defined here to avoid
+void-variable errors on timers.")
+
 ;; Only set user-emacs-directory if Emacs hasn't already done so
 ;; (e.g. via --init-directory for the emacs-prod daemon).
 (when (or (not (boundp 'user-emacs-directory))
