@@ -2,7 +2,8 @@
 { self, config, pkgs, lib, ... }:
 
 let
-  emacsPkg = (pkgs.emacs30-pgtk or pkgs.emacs29-pgtk or pkgs.emacs-gtk or pkgs.emacs);
+  # emacsPkg = (pkgs.emacs30-pgtk or pkgs.emacs29-pgtk or pkgs.emacs-gtk or pkgs.emacs);
+  emacsPkg =  (pkgs.emacs30 or pkgs.emacs29 or pkgs.emacs-gtk or pkgs.emacs);  
 
   emacsSrcDir = self + "/home/data/apps/emacs";
   srcEarly    = emacsSrcDir + "/early-init.el";
