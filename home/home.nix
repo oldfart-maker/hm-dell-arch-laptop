@@ -19,7 +19,6 @@
     ./modules/core/fastfetch.nix
     ./modules/core/wallpaper.nix
     ./modules/core/dev-tools.nix
-    ./modules/core/system-tools.nix
     ./modules/tools/tools.nix
 
     ./modules/apps/mako.nix
