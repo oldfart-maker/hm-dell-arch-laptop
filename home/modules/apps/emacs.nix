@@ -2,22 +2,19 @@
 { self, config, pkgs, lib, ... }:
 
 let
-  # Choose an Emacs build available on this nixpkgs
-  emacsPkg = (pkgs.emacs30-pgtk or pkgs.emacs29-pgtk or pkgs.emacs-gtk or pkgs.emacs);
+  # emacsPkg = (pkgs.emacs30-pgtk or pkgs.emacs29-pgtk or pkgs.emacs-gtk or pkgs.emacs);
+  emacsPkg = (pkgs.emacs30);
 
-  # Repo-root anchored sources (committed under home/data/apps/emacs)
   emacsSrcDir = self + "/home/data/apps/emacs";
-  srcEarly    = emacsSrcDir + "/early-init.el";   # optional
+  srcEarly    = emacsSrcDir + "/early-init.el";
   srcInit     = emacsSrcDir + "/init.el";
-  srcModules  = emacsSrcDir + "/modules";         # dir with *.el
+  srcModules  = emacsSrcDir + "/modules"; 
 
-  # Install target in $HOME
   emacsDir = "${config.xdg.configHome}/emacs-prod";
 in
 {
   home.packages = [ emacsPkg ];
 
-  # Fail early if required files are missing in the repo
   assertions = [
     { assertion = builtins.pathExists srcInit;
       message   = "[emacs] Missing ${srcInit}. Put your init.el under home/data/apps/emacs/"; }
@@ -25,7 +22,6 @@ in
       message   = "[emacs] Missing ${srcModules} directory under home/data/apps/emacs/"; }
   ];
 
-  # Copy committed config into ~/.config/emacs-prod (reproducible)
   home.file."${emacsDir}/early-init.el".source    = srcEarly;
   home.file."${emacsDir}/init.el".source          = srcInit;
 
@@ -34,7 +30,6 @@ in
     recursive = true;
   };
   
-  # Emacs daemon using that init directory
   systemd.user.services.emacs-prod = {
     Unit = {
       Description = "Emacs daemon (emacs-prod)";
