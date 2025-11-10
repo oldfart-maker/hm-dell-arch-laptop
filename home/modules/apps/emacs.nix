@@ -9,8 +9,8 @@ let
   srcEarly    = emacsSrcDir + "/early-init.el";
   srcInit     = emacsSrcDir + "/init.el";
   srcModules  = emacsSrcDir + "/modules"; 
-
   emacsDir = "${config.xdg.configHome}/emacs-prod";
+  emacsCommonDir = "${config.xdg.configHome}/emacs-common";
 in
 {
   home.packages = [ emacsPkg ];
@@ -22,6 +22,8 @@ in
       message   = "[emacs] Missing ${srcModules} directory under home/data/apps/emacs/"; }
   ];
 
+  home.file."${emacsCommonDir}/.keep".text = "";
+  
   home.file."${emacsDir}/early-init.el".source    = srcEarly;
   home.file."${emacsDir}/init.el".source          = srcInit;
 
