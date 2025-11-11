@@ -56,6 +56,14 @@ printf "experimental-features = nix-command flakes\n" > ~/.config/nix/nix.conf
 hash -r
 
 ***
+* Step 3.1 - Install nixGL for wayland compatability
+Note: this is needed to run qutebrowser
+
+nix-channel --add https://github.com/nix-community/nixGL/archive/main.tar.gz nixgl
+nix-channel --update
+nix-env -iA nixgl.auto.nixGLDefault
+
+***
 * Step 4 - Run build/fetch with remote flake.
 
 nix run nixpkgs#home-manager -- switch \
@@ -65,6 +73,7 @@ nix run nixpkgs#home-manager -- switch \
 * Step 5 - Change the vterm-shell variable.
 
 M-x set-variable, vterm-shell, "/bin/bash"
+
 ***
 * Step 6 - Prime the wallpapers.
 
@@ -77,10 +86,4 @@ scp ~/.config/emacs-common/api-keys.el \
     username@192.168.1.108:~/.config/emacs-common/api-keys.el
 	
 ***
-* Step 8 - Install nixGL for wayland compatability
-Note: this is needed to run qutebrowser
-
-nix-channel --add https://github.com/nix-community/nixGL/archive/main.tar.gz nixgl
-nix-channel --update
-nix-env -iA nixgl.auto.nixGLDefault
 
