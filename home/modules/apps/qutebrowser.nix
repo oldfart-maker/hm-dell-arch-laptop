@@ -33,17 +33,22 @@ in {
       # Downloads
       downloads.location.directory = "~/Downloads";
     };
-
-    # Optional keybindings
-    keyBindings = {
-      normal = {
-        "d" = "scroll-page 0 0.5";   # scroll down half page
-        "u" = "scroll-page 0 -0.5";  # scroll up half page
-        "J" = "tab-next";
-        "K" = "tab-prev";
-        "x" = "tab-close";
-        "X" = "undo";
-      };
-    };
   };
+
+ # This is the .desktop entry
+  xdg.desktopEntries.qutebrowser-wayland = {
+    name = "Qutebrowser (Wayland + nixGL)";
+    genericName = "Web Browser";
+    comment = "Keyboard-focused browser using Wayland and nixGL";
+    exec = "${quteWrapped}/bin/qutebrowser %u";
+    icon = "org.qutebrowser.qutebrowser";
+    terminal = false;
+    categories = [ "Network" "WebBrowser" ];
+    mimeType = [
+      "text/html"
+      "x-scheme-handler/http"
+      "x-scheme-handler/https"
+    ];
+    startupNotify = true;
+  };  
 }

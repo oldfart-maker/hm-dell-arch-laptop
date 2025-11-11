@@ -14,8 +14,14 @@ c) station wlan0 scan
 d) station wlan0 get-networks
 e) station wlan0 connect MySSID (Hangout)
 
-****
-* Step 3
+***
+* Step 2.1 (If you run this step, skip Step 3)
+
+a) scp "username@192.168.1.80:~/projects/hm-dell-arch-laptop/tools/*.json"
+b) archinstall --config user___configuration.json --cred user___credentials.json
+
+**************
+* Step 3 (Skip this step if you run Step 2.1)
 
 a) pacman -Sy
 b) pacman -S archinstall
