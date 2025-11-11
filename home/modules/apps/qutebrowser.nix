@@ -16,7 +16,6 @@
       # Load last session automatically
       auto_save.session = true;
       session.default_name = "default";
-      };
 
       # Downloads
       downloads.location.directory = "~/Downloads";
