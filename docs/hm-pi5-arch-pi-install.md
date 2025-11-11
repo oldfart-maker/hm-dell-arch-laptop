@@ -30,16 +30,10 @@ nix run nixpkgs#home-manager -- switch \
   --flake 'github:oldfart-maker/hm-pi5-arch-pi#username' -v
 
 ***
-* Step 5 - Clone repo. (I'M NOT SURE WHY A LOCAL REPO IS NEEDED.)
-
-mkdir -p ~/projects
-git clone https://github.com/oldfart-maker/hm-pi5-arch-pi.git ~/projects/hm-pi5-arch-pi
-
-***
-* Step 6 - Change the vterm-shell variable.
+* Step 5 - Change the vterm-shell variable.
 
 M-x set-variable, vterm-shell, "/bin/bash"
 ***
-* Step 7 - Prime the wallpapers.
+* Step 6 - Prime the wallpapers.
 
 git clone https://github.com/greatbot6120/arch-wallpapers.git
