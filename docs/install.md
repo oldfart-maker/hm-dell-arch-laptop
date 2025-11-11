@@ -75,3 +75,12 @@ git clone https://github.com/greatbot6120/arch-wallpapers.git
 
 scp ~/.config/emacs-common/api-keys.el \
     username@192.168.1.108:~/.config/emacs-common/api-keys.el
+	
+***
+* Step 8 - Install nixGL for wayland compatability
+Note: this is needed to run qutebrowser
+
+nix-channel --add https://github.com/nix-community/nixGL/archive/main.tar.gz nixgl
+nix-channel --update
+nix-env -iA nixgl.auto.nixGLDefault
+
