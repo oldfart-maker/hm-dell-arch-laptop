@@ -59,7 +59,7 @@ hash -r
 * Step 4 - Run build/fetch with remote flake.
 
 nix run nixpkgs#home-manager -- switch \
-  --flake 'github:oldfart-maker/hm-dell-arch-laptop#username' -v
+  --flake 'github:oldfart-maker/hm-dell-arch-laptop#username' -v --refresh
 
 ***
 * Step 5 - Change the vterm-shell variable.
