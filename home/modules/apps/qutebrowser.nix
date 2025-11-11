@@ -1,20 +1,7 @@
 { pkgs, ... }:
 
-let
-  quteWrapped = pkgs.writeShellScriptBin "qutebrowser" ''
-    # Force Qt to use Wayland, not X11
-    export QT_QPA_PLATFORM=wayland
-    export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
-
-    # Run the Nix qutebrowser through nixGL so it sees the host GPU drivers
-    exec nixGL ${pkgs.qutebrowser}/bin/qutebrowser "$@"
-  '';
-
-in {  
   programs.qutebrowser = {
     enable = true;
-
-    package=quteWrapped;
     
     settings = {
       # Default zoom level

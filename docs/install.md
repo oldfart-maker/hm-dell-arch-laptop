@@ -24,6 +24,7 @@ d) additional packages
 	1. reflector
 	\2. git
 	3. base-devel
+	4. xwayland-satellite
 	
 ***
 * Step 4
