@@ -33,7 +33,6 @@ a) enable ssh: sudo systemctl enable sshd --now
 b) login to host and start AFTER SYSTEM INSTALL docs
 
 
-
 AFTER SYSTEM INSTALL
 ***
 * Step 1 - Core install.
