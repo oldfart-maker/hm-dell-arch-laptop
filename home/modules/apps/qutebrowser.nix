@@ -16,12 +16,6 @@
       # Load last session automatically
       auto_save.session = true;
       session.default_name = "default";
-
-      # Set search engine
-      url.default_page = "https://duckduckgo.com/";
-      url.searchengines = {
-        DEFAULT = "https://duckduckgo.com/?q={}";
-        g = "https://google.com/search?q={}";
       };
 
       # Downloads
