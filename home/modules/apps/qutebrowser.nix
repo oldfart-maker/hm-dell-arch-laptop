@@ -16,26 +16,7 @@ let
 in {  
   programs.qutebrowser = {
     enable = true;
-
     package=quteWrapped;
-    
-    settings = {
-      # Default zoom level
-      zoom.default = "110%";
-
-      # Block ads/tracking (requires qtwebengine compiled with adblock)
-      content.blocking.enabled = true;
-
-      # Dark mode if desired
-      colors.webpage.darkmode.enabled = true;
-
-      # Load last session automatically
-      auto_save.session = true;
-      session.default_name = "default";
-
-      # Downloads
-      downloads.location.directory = "~/Downloads";
-    };
   };
 
   home.file.".config/qutebrowser/config.py".source    = cfgPath;
