@@ -50,7 +50,7 @@ in {
       force  = true;
       source = themePath;
     };
-  }
+  };
 
  # This is the .desktop entry
   xdg.desktopEntries.qutebrowser-wayland = {
