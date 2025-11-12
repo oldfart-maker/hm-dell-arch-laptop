@@ -38,13 +38,7 @@ in {
     };
   };
 
-  home.file = {
-    ".config/qutebrowser/config.py" = {
-      force  = true;
-      source = cfgPath;
-    };
-  }
-
+  home.file.".config/qutebrowser/config.py".source    = cfgPath;
   home.file = {
     ".config/qutebrowser/gruvbox.py" = {
       force  = true;
