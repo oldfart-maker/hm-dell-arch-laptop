@@ -10,6 +10,9 @@ let
     exec nixGL ${pkgs.qutebrowser}/bin/qutebrowser "$@"
   '';
 
+  cfgPath  = repoPath "home/data/apps/qutebrwoser/config.py";
+  themePath = repoPath "home/data/apps/qutebrowser/gruvbox.py";
+  
 in {  
   programs.qutebrowser = {
     enable = true;
@@ -34,6 +37,20 @@ in {
       downloads.location.directory = "~/Downloads";
     };
   };
+
+  home.file = {
+    ".config/qutebrowser/config.py" = {
+      force  = true;
+      source = cfgPath;
+    };
+  }
+
+  home.file = {
+    ".config/qutebrowser/gruvbox.py" = {
+      force  = true;
+      source = themePath;
+    };
+  }
 
  # This is the .desktop entry
   xdg.desktopEntries.qutebrowser-wayland = {
