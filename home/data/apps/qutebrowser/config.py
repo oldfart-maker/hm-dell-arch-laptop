@@ -1,4 +1,4 @@
-config.load_autoconfig()
+config.load_autoconfig(True)
 
 # Keyboardio (TRY THESE WITH MY NEW KEYBOARDIO!!)
 config.bind('<Shift-Left>', 'back')
@@ -8,5 +8,5 @@ config.bind('<Shift-Right>', 'forward')
 
 c.fonts.web.family.fantasy = 'JetBrains Mono'
 
-c.content.javascript.enabled = False
+# Load theme
 config.source('gruvbox.py')

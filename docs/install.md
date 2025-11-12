@@ -86,7 +86,7 @@ M-x set-variable, vterm-shell, "/bin/bash"
 git clone https://github.com/greatbot6120/arch-wallpapers.git
 
 ***
-* Step 7 - Copy api-keys.el to target (Run on host)
+* Step 7 - Copy api-keys.el to target (Change this run on target)
 
 scp ~/.config/emacs-common/api-keys.el \
     username@192.168.1.108:~/.config/emacs-common/api-keys.el
