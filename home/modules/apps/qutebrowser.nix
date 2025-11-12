@@ -17,7 +17,7 @@ in {
   programs.qutebrowser = {
     enable = true;
     package=quteWrapped;
-    extraConfig = builtins.readfile cfgPath;
+    extraConfig = builtins.readFile cfgPath;
   };
 
   home.file.".config/qutebrowser/gruvbox.py".source    = themePath;
