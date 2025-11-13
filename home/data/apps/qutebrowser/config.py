@@ -1,4 +1,4 @@
-config.load_autoconfig(True)
+config.load_autoconfig(False)
 
 c.auto_save.session = True
 c.auto_save.interval = 15000
