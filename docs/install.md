@@ -15,32 +15,22 @@ d) station wlan0 get-networks
 e) station wlan0 connect MySSID (Hangout)
 
 ***
-* Step 2.1 (If you run this step, skip Step 3)
+* Step 3
 
-a) scp "username@192.168.1.80:~/projects/hm-dell-arch-laptop/tools/*.json"
-b) archinstall --config user___configuration.json --cred user___credentials.json
+a) scp "username@192.168.1.80:~/projects/hm-dell-arch-laptop/tools/*.json" . 
 
+c) archinstall --config user___configuration.json --creds user___credentials.json
 **************
-* Step 3 (Skip this step if you run Step 2.1)
-
-a) pacman -Sy
-b) pacman -S archinstall
-c) archinstall (go through the wizard)
-d) additional packages
-	1. reflector
-	\2. git
-	3. base-devel
-	4. xwayland-satellite
-	
-***
-* Step 4
-
-a) enable ssh: sudo systemctl enable sshd --now
-b) login to host and start AFTER SYSTEM INSTALL docs
 
 
 AFTER SYSTEM INSTALL
 ***
+
+* Step 0 - Start ssh
+sudo systemctl enable sshd --now
+
+***
+
 * Step 1 - Core install.
 
 sh <(curl -L https://nixos.org/nix/install) --no-daemon
@@ -92,4 +82,5 @@ scp ~/.config/emacs-common/api-keys.el \
     username@192.168.1.108:~/.config/emacs-common/api-keys.el
 	
 ***
-
+* Step 8 - Skip steps 0-7 to run automated script
+b) scp "username@192.168.1.80:~/projects/hm-dell-arch-laptop/tools/target-setup.sh" . 

@@ -12,9 +12,6 @@
     "bootloader": "Grub",
     "custom_commands": [],
     "disk_config": {
-        "btrfs_options": {
-            "snapshot_config": null
-        },
         "config_type": "default_layout",
         "device_modifications": [
             {
@@ -99,7 +96,8 @@
         "base-devel",
         "git",
         "reflector",
-        "xwayland-satellite"
+        "xwayland-satellite",
+        "sshpass"
     ],
     "parallel_downloads": 0,
     "profile_config": {
