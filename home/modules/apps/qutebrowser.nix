@@ -18,9 +18,6 @@ in {
     enable = true;
     package=quteWrapped;
     extraConfig = builtins.readFile cfgPath;
-    extraPackages = python3Packages: with python3Packages; [
-      adblock
-    ];
   };
 
   home.file.".config/qutebrowser/gruvbox.py".source    = themePath;
