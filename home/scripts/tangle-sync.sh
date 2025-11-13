@@ -22,7 +22,7 @@
 set -Eeuo pipefail
 
 # --- defaults -------------------------------------------------------------
-REPO="${REPO:-$HOME/projects/hm-pi5-arch-pi}"
+REPO="${REPO:-$HOME/projects/hm-dell-arch-laptop}"
 
 NIRI_SRC_DIR="${NIRI_SRC_DIR:-$HOME/projects/niri_babel_config}"
 EMACS_SRC_DIR="${EMACS_SRC_DIR:-$HOME/projects/emacs_babel_config}"
