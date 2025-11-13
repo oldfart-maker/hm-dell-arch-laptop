@@ -23,6 +23,7 @@
     ./modules/apps/mako.nix
     ./modules/apps/emacs.nix
     ./modules/apps/qutebrowser.nix
+    ./modules/apps/bitwarden.nix
     
     ./modules/wm/niri/niri.nix
     ./modules/wm/niri/niri-data.nix
