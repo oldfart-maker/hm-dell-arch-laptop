@@ -1,4 +1,4 @@
-H{ pkgs, repoPath, ... }:
+{ pkgs, repoPath, ... }:
 
 let
   quteWrapped = pkgs.writeShellScriptBin "qutebrowser" ''
