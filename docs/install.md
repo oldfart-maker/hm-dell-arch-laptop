@@ -19,11 +19,11 @@ e) station wlan0 connect MySSID (Hangout)
 
 a) scp "username@192.168.1.80:~/projects/hm-dell-arch-laptop/tools/*.json" . 
 
-c) archinstall --config user___configuration.json --creds user___credentials.json
+c) archinstall --config user___configuration.json --creds user___credentials.json --silent
 **************
 
 
-AFTER SYSTEM INSTALL
+AFTER SYSTEM INSTALL (SKIP TO STEP 8 AND RUN AUTOMATED SCRIPT)
 ***
 
 * Step 0 - Start ssh
@@ -83,4 +83,5 @@ scp ~/.config/emacs-common/api-keys.el \
 	
 ***
 * Step 8 - Skip steps 0-7 to run automated script
-b) scp "username@192.168.1.80:~/projects/hm-dell-arch-laptop/tools/target-setup.sh" . 
+a) scp "username@192.168.1.80:~/projects/hm-dell-arch-laptop/tools/target-setup.sh" . 
+b) ./target-setup.sh 192.168.1.80 -u username -P Hangout2016! --no-strict
