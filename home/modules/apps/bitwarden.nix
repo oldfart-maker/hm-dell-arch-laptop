@@ -13,7 +13,5 @@ in
 {
   home.packages = [
     bitwardenWrapped
-    # optional: keep the original in closure explicitly
-    pkgs.bitwarden
   ];
 }
