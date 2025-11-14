@@ -24,6 +24,7 @@
     ./modules/apps/emacs.nix
     ./modules/apps/qutebrowser.nix
     ./modules/apps/bitwarden.nix
+    ./modules/apps/dankmaterialshell.nix
     
     ./modules/wm/niri/niri.nix
     ./modules/wm/niri/niri-data.nix
