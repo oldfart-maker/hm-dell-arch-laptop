@@ -13,6 +13,6 @@ let
 in {  
   programs.bitwarden = {
     enable = true;
-    package=_Wrapped
+    package=_Wrapped;
   };
 }
