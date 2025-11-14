@@ -1,4 +1,4 @@
-// LAST BUILD / DEPLOY: 2025-11-13 19:42:07
+// LAST BUILD / DEPLOY: 2025-11-14 16:27:35
 // ## NOTES  ###########################################################  
 // This config file has been created by emacs org babel. This was done
 // mostly as a learning experiment and to address the gaps that .kdl
@@ -91,7 +91,7 @@ output "eDP1" {
 
 spawn-at-startup         "xwayland-satellite"
 spawn-at-startup         "sh" "-c" "swayidle -w timeout 600 ~/.config/niri/scripts/lockscreen"
-spawn-at-startup         "~/.config/niri/scripts/statusbar"
+spawn-at-startup         "dms" "run"
 spawn-at-startup         "~/.config/niri/scripts/notifications"
 
 workspace "scratchpad" {
