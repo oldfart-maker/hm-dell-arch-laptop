@@ -4,7 +4,8 @@ let
   homeDir = config.home.homeDirectory;
 in
 {
-  # your bisync script
+  #### officesync script (no repair_remote_docs) ####
+
   home.file.".local/bin/officesync.sh" = {
     text = ''
       #!/usr/bin/env bash
@@ -16,7 +17,6 @@ in
       CACHE_DIR="$HOME/.cache/rclone"
       LOG="$CACHE_DIR/officesync.log"
       LOCK="$CACHE_DIR/officesync.lock"
-      REPAIR="$HOME/.local/bin/repair_remote_docs.sh"     # <- your repair script
 
       mkdir -p "$LOCAL_DIR" "$CACHE_DIR"
 
@@ -38,26 +38,15 @@ in
           --log-file "$LOG" --log-level INFO -P
       }
 
-      # 1) pre-repair
-      if [[ -x "$REPAIR" ]]; then
-        log "running repair: $REPAIR $REMOTE_DIR"
-        nice -n 10 ionice -c2 -n7 "$REPAIR" "$REMOTE_DIR" >> "$LOG" 2>&1 || true
-      else
-        log "repair script not found at $REPAIR (skipping)"
-      fi
-
-      # 2) first attempt
+      # 1) first attempt
       log "bisync: first attempt"
       if run_bisync; then
         log "bisync: success"
         exit 0
       fi
 
-      # 3) fallback: repair again + one-time --resync, then a final normal pass
-      log "bisync failed; attempting repair + --resync"
-      [[ -x "$REPAIR" ]] && nice -n 10 ionice -c2 -n7 "$REPAIR" "$REMOTE_DIR" >> "$LOG" 2>&1 || true
-
-      # one-time resync to rebuild baselines if needed
+      # 2) fallback: one-time --resync, then a final normal pass
+      log "bisync failed; attempting --resync"
       if nice -n 10 ionice -c2 -n7 rclone bisync "$LOCAL_DIR" "$REMOTE_DIR" \
             --resync --conflict-resolve newer \
             --create-empty-src-dirs \
@@ -72,9 +61,37 @@ in
         fi
       fi
 
-      log "bisync: still failing after repair + resync"
+      log "bisync: still failing after resync"
       exit 1
     '';
     executable = true;
+  };
+
+  #### systemd user service + timer ####
+
+  systemd.user.services."officesync" = {
+    Unit = {
+      Description = "Rclone bisync Office-Docs (Global Sync)";
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = "${homeDir}/.local/bin/officesync.sh";
+    };
+    Install = {
+      WantedBy = [ "default.target" ];
+    };
+  };
+
+  systemd.user.timers."officesync" = {
+    Unit = {
+      Description = "Run officesync every 30 minutes";
+    };
+    Timer = {
+      OnCalendar = "*:0/30";  # every 30 minutes
+      Persistent  = true;
+    };
+    Install = {
+      WantedBy = [ "timers.target" ];
+    };
   };
 }
