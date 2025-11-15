@@ -11,18 +11,34 @@ let
   srcModules     = emacsSrcDir + "/modules"; 
   emacsDir       = "${config.xdg.configHome}/emacs-prod";
   emacsCommonDir = "${config.xdg.configHome}/emacs-common";
+
+  # sys-secrets location on the TARGET (synced in target-setup.sh)
+  secretsRoot   = "${config.home.homeDirectory}/projects/sys-secrets";
+  apiKeysSource = "${secretsRoot}/emacs/api-keys.el";
 in
 {
   home.packages = [ emacsPkg ];
 
   assertions = [
-    { assertion = builtins.pathExists srcInit;
-      message   = "[emacs] Missing ${srcInit}. Put your init.el under home/data/apps/emacs/"; }
-    { assertion = builtins.pathExists srcModules;
-      message   = "[emacs] Missing ${srcModules} directory under home/data/apps/emacs/"; }
+    {
+      assertion = builtins.pathExists srcInit;
+      message   = "[emacs] Missing ${srcInit}. Put your init.el under home/data/apps/emacs/";
+    }
+    {
+      assertion = builtins.pathExists srcModules;
+      message   = "[emacs] Missing ${srcModules} directory under home/data/apps/emacs/";
+    }
+    {
+      assertion = builtins.pathExists apiKeysSource;
+      message   = "[emacs] Missing ${apiKeysSource}. Ensure sys-secrets is synced to ~/projects/sys-secrets on this target.";
+    }
   ];
 
+  # keep-emacs-common dir present
   home.file."${emacsCommonDir}/.keep".text = "";
+
+  # api-keys.el from sys-secrets → ~/.config/emacs-common/api-keys.el
+  home.file."${emacsCommonDir}/api-keys.el".source = apiKeysSource;
   
   home.file."${emacsDir}/early-init.el".source    = srcEarly;
   home.file."${emacsDir}/init.el".source          = srcInit;

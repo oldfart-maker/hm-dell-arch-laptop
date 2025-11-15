@@ -249,21 +249,34 @@ popd >/dev/null
 rm -rf "$TMP_DIR"
 
 # -------------------------------------------------------------------
-# Step 7 - Pull api-keys.el from host to target
+# Step 7 - Sync sys-secrets repo from host to target
 # -------------------------------------------------------------------
 echo
-echo "-> Step 7: Pulling ~/.config/emacs-common/api-keys.el from host to target"
-REMOTE_API="~/.config/emacs-common/api-keys.el"
-LOCAL_DIR="${HOME}/.config/emacs-common"
-LOCAL_DEST="${LOCAL_DIR}/api-keys.el"
+echo "-> Step 7: Syncing ~/projects/sys-secrets from host to target"
 
-mkdir -p "${LOCAL_DIR}"
-if run_scp "${HOST_USER}@${HOST_IP}:${REMOTE_API}" "${LOCAL_DEST}"; then
-  echo "Copied API keys to ${LOCAL_DEST}"
+REMOTE_SECRETS_DIR="~/projects/sys-secrets"
+LOCAL_PROJECTS_DIR="${HOME}/projects"
+LOCAL_SECRETS_DIR="${LOCAL_PROJECTS_DIR}/sys-secrets"
+
+mkdir -p "${LOCAL_PROJECTS_DIR}"
+
+if [[ -d "${LOCAL_SECRETS_DIR}/.git" ]]; then
+  echo "sys-secrets already exists at ${LOCAL_SECRETS_DIR}; updating from host (overwrite with scp -r)"
 else
-  echo "Warning: failed to copy API keys from ${HOST_USER}@${HOST_IP}:${REMOTE_API}"
+  echo "sys-secrets not found locally; initial copy from host"
 fi
 
+# Copy the sys-secrets directory recursively from host -> target.
+# This brings over the working tree (and .git), which is fine for now.
+if run_scp -r "${HOST_USER}@${HOST_IP}:${REMOTE_SECRETS_DIR}" "${LOCAL_PROJECTS_DIR}/"; then
+  echo "sys-secrets synced to ${LOCAL_SECRETS_DIR}"
+else
+  echo "Warning: failed to sync sys-secrets from ${HOST_USER}@${HOST_IP}:${REMOTE_SECRETS_DIR}"
+fi
+
+# -------------------------------------------------------------------
+# Finish
+# -------------------------------------------------------------------
 echo
 echo "=== Finished target-setup.sh ==="
 echo "Steps completed: 1,2,3,3.1,4,6,7 (5 skipped intentionally)."
