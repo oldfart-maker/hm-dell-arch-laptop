@@ -24,17 +24,17 @@ b) sudo pacman -S git
 # a) mkdir -p ~/projects
 b) cd ~/projects
 c) git clone https://github.com/oldfart-maker/hm-dell-arch-laptop.git
-# d) cp user_configuration.json ~/
-e) cp user_credentials.json ~/
-f) cp bootstrap.sh ~/
-g) chmod +x bootstrap.sh
-h) ./bootstrap.sh
+d) cd /projects/hm-dell-arch-laptop/tools
+e) ./bootstrap.sh
+# 
 
 ***
 * Step 4 - Run setup
 
-a) git clone git@github.com:oldfart-maker/hm-dell-arch-laptop.git
-b) cd ~/projects/hm-dell-arch-laptop/tools
-c) chmod +x target-setup.sh
-d) ./target-setup.sh
-e) rm -rf hm-dell-arch-laptop
+a) mkdir -p ~/projects
+b) cd ~/projects
+c) git clone https://github.com/oldfart-maker/hm-dell-arch-laptop.git
+d) cd ~/projects/hm-dell-arch-laptop/tools
+e) chmod +x target-setup.sh
+f) ./target-setup.sh
+g) rm -rf hm-dell-arch-laptop
