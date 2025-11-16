@@ -1,5 +1,5 @@
-{ config, pkgs, lib, ... }:
+{ pkgs ... }:
 
 {
-  home.packages = [libreoffice-still];
+  home.packages = [pkgs.libreoffice-still];
 }
