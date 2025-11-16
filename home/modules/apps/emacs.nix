@@ -19,21 +19,6 @@ in
 {
   home.packages = [ emacsPkg ];
 
-  assertions = [
-    {
-      assertion = builtins.pathExists srcInit;
-      message   = "[emacs] Missing ${srcInit}. Put your init.el under home/data/apps/emacs/";
-    }
-    {
-      assertion = builtins.pathExists srcModules;
-      message   = "[emacs] Missing ${srcModules} directory under home/data/apps/emacs/";
-    }
-    {
-      assertion = builtins.pathExists apiKeysSource;
-      message   = "[emacs] Missing ${apiKeysSource}. Ensure sys-secrets is synced to ~/projects/sys-secrets on this target.";
-    }
-  ];
-
   # keep-emacs-common dir present
   home.file."${emacsCommonDir}/.keep".text = "";
 

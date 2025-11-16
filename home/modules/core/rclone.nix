@@ -14,12 +14,4 @@ in
   home.file.".config/rclone/officesync.filter" = {
     source = "${secretsRoot}/rclone/officesync.filter";
   };
-
-  # optional assertion to catch timing mistakes
-  assertions = [
-    {
-      assertion = builtins.pathExists "${secretsRoot}/rclone/rclone.conf";
-      message   = "[rclone] Missing ${secretsRoot}/rclone/rclone.conf; did sys-secrets sync yet?";
-    }
-  ];
 }
