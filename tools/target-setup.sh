@@ -8,15 +8,14 @@
 #     * enables sshd
 #     * re-execs itself as LOCAL_USER="username"
 # - If run as non-root (username):
-#     * ensures ~/projects/sys-secrets is cloned from GitHub
+#     * assumes ~/projects/sys-secrets already exists (cloned manually)
 #     * installs Nix (no-daemon), Home Manager, and nixGL
 #     * runs home-manager switch using the REMOTE flake:
 #         github:oldfart-maker/hm-dell-arch-laptop#username
 #
 # Assumptions:
 # - Network is up (Wi-Fi/DNS working)
-# - git is installed
-# - SSH keys / credentials for your private GitHub repos are available
+# - ~/projects/sys-secrets exists and contains your secrets repo
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -31,11 +30,17 @@ Run this as root or as the target login user ("username") on a newly
 installed Arch system. It will:
 
   - enable sshd
-  - clone/update ~/projects/sys-secrets
+  - verify that ~/projects/sys-secrets exists
   - install Nix (no-daemon) and Home Manager
   - install nixGL
   - run home-manager switch with the remote flake:
       github:oldfart-maker/hm-dell-arch-laptop#username
+
+Before running this script, make sure you have already created:
+
+  ~/projects/sys-secrets
+
+and populated it with your secrets repository.
 
 EOF
 }
@@ -60,31 +65,21 @@ fi
 
 echo "=== ${progname}: bootstrap starting as ${USER} ==="
 
-# --- Basic checks -------------------------------------------------------------
-
-if ! command -v git >/dev/null 2>&1; then
-  echo "ERROR: git not found. Install git (e.g. 'sudo pacman -S git') and re-run."
-  exit 1
-fi
-
-# --- Ensure sys-secrets repo is present --------------------------------------
+# --- Ensure sys-secrets directory exists -------------------------------------
 
 PROJECTS_DIR="${HOME}/projects"
-SECRETS_REPO_URL="git@github.com:oldfart-maker/sys-secrets.git"
 SECRETS_DIR="${PROJECTS_DIR}/sys-secrets"
 
 echo
-echo "-> Ensuring projects directory exists at ${PROJECTS_DIR}"
-mkdir -p "${PROJECTS_DIR}"
-
-echo
-echo "-> Ensuring sys-secrets repo is present"
-if [[ -d "${SECRETS_DIR}/.git" ]]; then
-  echo "   Found existing sys-secrets; pulling latest from origin"
-  git -C "${SECRETS_DIR}" pull --ff-only || echo "Warning: git pull in sys-secrets failed"
-else
-  echo "   Cloning sys-secrets into ${SECRETS_DIR}"
-  git clone "${SECRETS_REPO_URL}" "${SECRETS_DIR}"
+echo "-> Checking for secrets directory at ${SECRETS_DIR}"
+if [[ ! -d "${SECRETS_DIR}" ]]; then
+  echo "ERROR: ${SECRETS_DIR} not found."
+  echo
+  echo "This script assumes your secrets repo is already present at:"
+  echo "  ${SECRETS_DIR}"
+  echo
+  echo "Clone or create it there first, then re-run ${progname}."
+  exit 1
 fi
 
 # --- Local helper dirs used by HM config -------------------------------------
@@ -192,4 +187,4 @@ rm -rf "$TMP_DIR"
 
 echo
 echo "=== Finished ${progname} ==="
-echo "Nix, Home Manager, nixGL, sys-secrets, and the remote HM flake are now wired up."
+echo "Nix, Home Manager, nixGL, sys-secrets (pre-cloned), and the remote HM flake are now wired up."
