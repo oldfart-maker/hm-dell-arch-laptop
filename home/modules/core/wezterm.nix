@@ -17,7 +17,7 @@ in
   programs.wezterm = {
     enable = true;
     package = weztermWrapped;
-  }
+  };
 
   xdg.configFile."wezterm/wezterm.lua" = {
     source = cfgPath;
