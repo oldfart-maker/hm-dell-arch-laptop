@@ -14,11 +14,16 @@ d) station wlan0 get-networks
 e) station wlan0 connect MySSID (Hangout)
 
 ***
+* Step 2.5 - Install git
+a) sudo pacman -Sy
+b) sudo pacman -S git
+
+***
 * Step 3 - Boostrap archlinux
 
 # a) mkdir -p ~/projects
 b) cd ~/projects
-c) git clone git@github.com:oldfart-maker/hm-dell-arch-laptop.git
+c) git clone https://github.com/oldfart-maker/hm-dell-arch-laptop.git
 # d) cp user_configuration.json ~/
 e) cp user_credentials.json ~/
 f) cp bootstrap.sh ~/
