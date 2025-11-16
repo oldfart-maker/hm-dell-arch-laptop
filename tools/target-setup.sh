@@ -1,154 +1,104 @@
 #!/usr/bin/env bash
 # target-setup.sh
 #
-# Usage (on TARGET):
-#   ./target-setup.sh <HOST_IP> -u <HOST_USER> [-P <HOST_PASSWORD>] [--no-strict]
-#
-# - HOST_IP      : IP of the host machine (where we pull from)
-# - -u HOST_USER : username on the host (for scp pulls)
-# - -P HOST_PASS : optional, use sshpass to supply host password (insecure; visible in ps/history)
-# - --no-strict  : optional, do NOT set StrictHostKeyChecking=accept-new (use SSH defaults)
+# Bootstrap script for a fresh Arch target.
 #
 # Behavior:
 # - If run as root:
-#     * enables sshd (so you can monitor from host)
+#     * enables sshd
 #     * re-execs itself as LOCAL_USER="username"
 # - If run as non-root (username):
-#     * runs Nix, Home Manager, flakes, nixGL, wallpapers, api-keys pull
+#     * ensures ~/projects/sys-secrets is cloned from GitHub
+#     * installs Nix (no-daemon), Home Manager, and nixGL
+#     * runs home-manager switch using the REMOTE flake:
+#         github:oldfart-maker/hm-dell-arch-laptop#username
 #
-# All network setup is assumed already done (Wi-Fi up, DNS working).
+# Assumptions:
+# - Network is up (Wi-Fi/DNS working)
+# - git is installed
+# - SSH keys / credentials for your private GitHub repos are available
 
 set -euo pipefail
 IFS=$'\n\t'
 
 progname="$(basename "$0")"
 
-export HOST_IP=192.168.1.80
-export HOST_USER=username
-export HOST_PASS=Hangout2016!
-export HOST_PASS=1
-
 print_usage() {
   cat <<EOF
-Usage: $progname <HOST_IP> -u <HOST_USER> [-P <HOST_PASSWORD>] [--no-strict]
+Usage: $progname
 
-Examples:
-  $progname 192.168.1.80 -u mike
-  $progname 192.168.1.80 -u mike -P 'host-password' --no-strict
+Run this as root or as the target login user ("username") on a newly
+installed Arch system. It will:
+
+  - enable sshd
+  - clone/update ~/projects/sys-secrets
+  - install Nix (no-daemon) and Home Manager
+  - install nixGL
+  - run home-manager switch with the remote flake:
+      github:oldfart-maker/hm-dell-arch-laptop#username
+
 EOF
 }
 
-# --- Argument parsing ---
-
-if [[ $# -lt 1 ]]; then
+if [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
   print_usage
-  exit 2
+  exit 0
 fi
 
-HOST_IP="$1"
-shift
-
-HOST_USER=""
-HOST_PASS=""
-NO_STRICT=false
-
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-    -u|--user)
-      HOST_USER="${2:-}"
-      shift 2
-      ;;
-    -P|--password)
-      HOST_PASS="${2:-}"
-      shift 2
-      ;;
-    --no-strict)
-      NO_STRICT=true
-      shift
-      ;;
-    -h|--help)
-      print_usage
-      exit 0
-      ;;
-    *)
-      echo "Unknown argument: $1"
-      print_usage
-      exit 2
-      ;;
-  esac
-done
-
-if [[ -z "$HOST_USER" ]]; then
-  echo "ERROR: host username is required (-u)."
-  print_usage
-  exit 2
-fi
-
-# --- Root → non-root flip ---
+# --- Root → non-root flip -----------------------------------------------------
 
 if [[ "$EUID" -eq 0 ]]; then
-  # Target login user on the newly installed system.
   LOCAL_USER="username"
 
   echo "Running as root. Enabling sshd, then re-running as ${LOCAL_USER}..."
   systemctl enable sshd --now || true
 
-  # Re-exec this script as LOCAL_USER with the same arguments.
-  # Note: HOST_PASS should not contain spaces or crazy shell chars.
-  exec su - "${LOCAL_USER}" -c "$0 ${HOST_IP} -u ${HOST_USER} ${HOST_PASS:+-P ${HOST_PASS}} ${NO_STRICT:+--no-strict}"
+  exec su - "${LOCAL_USER}" -c "$0"
 fi
 
 # From here on, we are non-root (running as LOCAL_USER or direct login user).
 
-# --- SCP config and helpers ---
+echo "=== ${progname}: bootstrap starting as ${USER} ==="
 
-if [[ "$NO_STRICT" = true ]]; then
-  SCP_OPTS="-o ConnectTimeout=10"
-else
-  SCP_OPTS="-o StrictHostKeyChecking=accept-new -o ConnectTimeout=10"
+# --- Basic checks -------------------------------------------------------------
+
+if ! command -v git >/dev/null 2>&1; then
+  echo "ERROR: git not found. Install git (e.g. 'sudo pacman -S git') and re-run."
+  exit 1
 fi
 
-run_scp() {
-  # Usage: run_scp source target
-  if [[ -n "$HOST_PASS" ]]; then
-    if ! command -v sshpass >/dev/null 2>&1; then
-      echo "ERROR: sshpass not found, but -P/HOST_PASS was provided."
-      echo "Install sshpass or omit -P."
-      exit 3
-    fi
-    # shellcheck disable=SC2086
-    sshpass -p "$HOST_PASS" scp $SCP_OPTS "$@"
-  else
-    # shellcheck disable=SC2086
-    scp $SCP_OPTS "$@"
-  fi
-}
+# --- Ensure sys-secrets repo is present --------------------------------------
 
-echo "=== target-setup.sh (pull-from-host) ==="
-echo "Host: ${HOST_USER}@${HOST_IP}"
-[[ -n "$HOST_PASS" ]] && echo "Note: using sshpass (password visible to local process list)."
+PROJECTS_DIR="${HOME}/projects"
+SECRETS_REPO_URL="git@github.com:oldfart-maker/sys-secrets.git"
+SECRETS_DIR="${PROJECTS_DIR}/sys-secrets"
 
-# Ensure sshd is enabled even if we started as non-root
 echo
-echo "-> Ensuring sshd is enabled (will prompt for sudo password if needed)"
-if command -v sudo >/dev/null 2>&1; then
-  sudo systemctl enable sshd --now || true
+echo "-> Ensuring projects directory exists at ${PROJECTS_DIR}"
+mkdir -p "${PROJECTS_DIR}"
+
+echo
+echo "-> Ensuring sys-secrets repo is present"
+if [[ -d "${SECRETS_DIR}/.git" ]]; then
+  echo "   Found existing sys-secrets; pulling latest from origin"
+  git -C "${SECRETS_DIR}" pull --ff-only || echo "Warning: git pull in sys-secrets failed"
 else
-  echo "sudo not found; assuming sshd already handled when script ran as root."
+  echo "   Cloning sys-secrets into ${SECRETS_DIR}"
+  git clone "${SECRETS_REPO_URL}" "${SECRETS_DIR}"
 fi
 
-# Prep local directories
-echo
-echo "-> Creating local directories"
-mkdir -p "$HOME/.config/emacs-common" "$HOME/Pictures/wallpapers"
+# --- Local helper dirs used by HM config -------------------------------------
 
-# -------------------------------------------------------------------
-# Install Nix (no-daemon) if missing
-# -------------------------------------------------------------------
 echo
-echo "Installing Nix (no-daemon) if not already installed"
+echo "-> Creating local helper directories"
+mkdir -p "${HOME}/.config/emacs-common" "${HOME}/Pictures/wallpapers"
+
+# --- Install Nix (no-daemon) if missing --------------------------------------
+
+echo
+echo "-> Installing Nix (no-daemon) if not already installed"
 if command -v nix >/dev/null 2>&1; then
-  echo "nix already present; skipping installer"
+  echo "   nix already present; skipping installer"
 else
   sh <(curl -L https://nixos.org/nix/install) --no-daemon
 fi
@@ -157,27 +107,25 @@ fi
 if [[ -f "${HOME}/.nix-profile/etc/profile.d/nix.sh" ]]; then
   # shellcheck disable=SC1090
   . "${HOME}/.nix-profile/etc/profile.d/nix.sh"
-  echo "Sourced nix profile"
+  echo "   Sourced nix profile"
 else
   echo "Warning: nix profile not found at ~/.nix-profile/etc/profile.d/nix.sh (may require new login)."
 fi
 
-# -------------------------------------------------------------------
-# Home Manager install via channel
-# -------------------------------------------------------------------
+# --- Home Manager via channel -------------------------------------------------
+
 echo
-echo "Setting up Home Manager channel and installing"
+echo "-> Setting up Home Manager channel and installing"
 if ! nix-channel --list | grep -q "home-manager"; then
   nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
 fi
 nix-channel --update
 nix-shell '<home-manager>' -A install || echo "Warning: home-manager install returned non-zero status"
 
-# -------------------------------------------------------------------
-# Enable flakes and nix-command
-# -------------------------------------------------------------------
+# --- Enable flakes and nix-command -------------------------------------------
+
 echo
-echo "Enabling flakes and nix-command"
+echo "-> Enabling flakes and nix-command"
 mkdir -p "${HOME}/.config/nix"
 printf "experimental-features = nix-command flakes\n" > "${HOME}/.config/nix/nix.conf"
 if [[ -f "${HOME}/.nix-profile/etc/profile.d/nix.sh" ]]; then
@@ -186,68 +134,34 @@ if [[ -f "${HOME}/.nix-profile/etc/profile.d/nix.sh" ]]; then
 fi
 hash -r
 
-# -------------------------------------------------------------------
-#  Install nixGL for Wayland compatibility
-# -------------------------------------------------------------------
+# --- Install nixGL for Wayland compatibility ---------------------------------
+
 echo
-echo "Installing nixGL via channel"
+echo "-> Installing nixGL via channel"
 if ! nix-channel --list | grep -q "nixgl"; then
   nix-channel --add https://github.com/nix-community/nixGL/archive/main.tar.gz nixgl
 fi
 nix-channel --update
 nix-env -iA nixgl.auto.nixGLDefault || echo "Warning: nix-env -iA nixgl.auto.nixGLDefault failed"
 
-# -------------------------------------------------------------------
-# Sync sys-secrets repo from host to target
-# -------------------------------------------------------------------
+# --- home-manager switch via REMOTE flake ------------------------------------
+
 echo
-echo "Syncing ~/projects/sys-secrets from host to target"
-
-REMOTE_SECRETS_DIR="~/projects/sys-secrets"
-LOCAL_PROJECTS_DIR="${HOME}/projects"
-LOCAL_SECRETS_DIR="${LOCAL_PROJECTS_DIR}/sys-secrets"
-
-mkdir -p "${LOCAL_PROJECTS_DIR}"
-
-if [[ -d "${LOCAL_SECRETS_DIR}/.git" ]]; then
-  echo "sys-secrets already exists at ${LOCAL_SECRETS_DIR}; updating from host (overwrite with scp -r)"
-else
-  echo "sys-secrets not found locally; initial copy from host"
-fi
-
-# Copy the sys-secrets directory recursively from host -> target.
-# This brings over the working tree (and .git), which is fine for now.
-if run_scp -r "${HOST_USER}@${HOST_IP}:${REMOTE_SECRETS_DIR}" "${LOCAL_PROJECTS_DIR}/"; then
-  echo "sys-secrets synced to ${LOCAL_SECRETS_DIR}"
-else
-  echo "Warning: failed to sync sys-secrets from ${HOST_USER}@${HOST_IP}:${REMOTE_SECRETS_DIR}"
-fi
-
-# -------------------------------------------------------------------
-# home-manager switch via flake
-# -------------------------------------------------------------------
-echo
-echo "Running home-manager switch via flake"
+echo "-> Running home-manager switch via remote flake"
 FLAKE_REF="github:oldfart-maker/hm-dell-arch-laptop#username"
+
 if command -v nix >/dev/null 2>&1; then
   nix run nixpkgs#home-manager -- switch --flake "${FLAKE_REF}" -v --refresh || {
     echo "Warning: home-manager flake switch returned non-zero. Inspect output for details."
   }
 else
-  echo "nix not found; skipping flake switch step"
+  echo "ERROR: nix not found after install; skipping flake switch step"
 fi
 
-# -------------------------------------------------------------------
-# SKIPPED (vterm-shell)
-# -------------------------------------------------------------------
-echo
-echo "SKIPPED (you will set vterm-shell in Emacs manually)"
+# --- Prime wallpapers from arch-wallpapers/png -------------------------------
 
-# -------------------------------------------------------------------
-# Prime wallpapers from arch-wallpapers/png
-# -------------------------------------------------------------------
 echo
-echo "Cloning arch-wallpapers and moving all *.png into ~/Pictures/wallpapers"
+echo "-> Cloning arch-wallpapers and moving all *.png into ~/Pictures/wallpapers"
 TMP_DIR="$(mktemp -d)"
 pushd "$TMP_DIR" >/dev/null
 
@@ -258,9 +172,9 @@ if git clone https://github.com/greatbot6120/arch-wallpapers.git; then
     PNGS=(arch-wallpapers/png/*.png)
     if [[ ${#PNGS[@]} -gt 0 ]]; then
       mv arch-wallpapers/png/*.png "${HOME}/Pictures/wallpapers/"
-      echo "Moved ${#PNGS[@]} PNG(s) to ${HOME}/Pictures/wallpapers"
+      echo "   Moved ${#PNGS[@]} PNG(s) to ${HOME}/Pictures/wallpapers"
     else
-      echo "No PNG files found in arch-wallpapers/png"
+      echo "   No PNG files found in arch-wallpapers/png"
     fi
     shopt -u nullglob
   else
@@ -274,8 +188,8 @@ fi
 popd >/dev/null
 rm -rf "$TMP_DIR"
 
-# -------------------------------------------------------------------
-# Finish
-# -------------------------------------------------------------------
+# --- Finish ------------------------------------------------------------------
+
 echo
-echo "=== Finished target-setup.sh ==="
+echo "=== Finished ${progname} ==="
+echo "Nix, Home Manager, nixGL, sys-secrets, and the remote HM flake are now wired up."
