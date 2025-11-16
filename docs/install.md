@@ -1,13 +1,12 @@
 SYSTEM INSTALL
 
-* Step 1
+* Step 1 - Create archlinux iso
 
 Creat archlinux iso using balena (Download from archlinux.org/downloads)
 
 ***
-* Step 2
+* Step 2 - Start network
 
-Boot distro and connect network.
 a) iwctl
 b) device list
 c) station wlan0 scan
@@ -15,73 +14,22 @@ d) station wlan0 get-networks
 e) station wlan0 connect MySSID (Hangout)
 
 ***
-* Step 3
+* Step 3 - Boostrap archlinux
 
-a) scp "username@192.168.1.80:~/projects/hm-dell-arch-laptop/tools/*.json" . 
-
-c) archinstall --config user___configuration.json --creds user___credentials.json --silent
-**************
-
-
-AFTER SYSTEM INSTALL (SKIP TO STEP 8 AND RUN AUTOMATED SCRIPT)
-***
-
-* Step 0 - Start ssh
-sudo systemctl enable sshd --now
+# a) mkdir -p ~/projects
+b) cd ~/projects
+c) git clone git@github.com:oldfart-maker/hm-dell-arch-laptop.git
+# d) cp user_configuration.json ~/
+e) cp user_credentials.json ~/
+f) cp bootstrap.sh ~/
+g) chmod +x bootstrap.sh
+h) ./bootstrap.sh
 
 ***
+* Step 4 - Run setup
 
-* Step 1 - Core install.
-
-sh <(curl -L https://nixos.org/nix/install) --no-daemon
-. ~/.nix-profile/etc/profile.d/nix.sh
-
-***
-* Step 2 - Home Manager install.
-
-nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
-nix-channel --update
-nix-shell '<home-manager>' -A install
-
-***
-* Step 3 - Configure experimental feature to run remote build/switch flake.
-
-mkdir -p ~/.config/nix
-printf "experimental-features = nix-command flakes\n" > ~/.config/nix/nix.conf
-. ~/.nix-profile/etc/profile.d/nix.sh
-hash -r
-
-***
-* Step 3.1 - Install nixGL for wayland compatability
-Note: this is needed to run qutebrowser
-
-nix-channel --add https://github.com/nix-community/nixGL/archive/main.tar.gz nixgl
-nix-channel --update
-nix-env -iA nixgl.auto.nixGLDefault
-
-***
-* Step 4 - Run build/fetch with remote flake.
-
-nix run nixpkgs#home-manager -- switch \
-  --flake 'github:oldfart-maker/hm-dell-arch-laptop#username' -v --refresh
-
-***
-* Step 5 - Change the vterm-shell variable.
-
-M-x set-variable, vterm-shell, "/bin/bash"
-
-***
-* Step 6 - Prime the wallpapers.
-
-git clone https://github.com/greatbot6120/arch-wallpapers.git
-
-***
-* Step 7 - Copy api-keys.el to target (Change this run on target)
-
-scp ~/.config/emacs-common/api-keys.el \
-    username@192.168.1.108:~/.config/emacs-common/api-keys.el
-	
-***
-* Step 8 - Skip steps 0-7 to run automated script
-a) scp "username@192.168.1.80:~/projects/hm-dell-arch-laptop/tools/target-setup.sh" . 
-b) ./target-setup.sh 192.168.1.80 -u username -P Hangout2016! --no-strict
+a) git clone git@github.com:oldfart-maker/hm-dell-arch-laptop.git
+b) cd ~/projects/hm-dell-arch-laptop/tools
+c) chmod +x target-setup.sh
+d) ./target-setup.sh
+e) rm -rf hm-dell-arch-laptop
