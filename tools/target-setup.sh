@@ -70,7 +70,7 @@ fi
 # --- Ensure sys-secrets repo is present --------------------------------------
 
 PROJECTS_DIR="${HOME}/projects"
-SECRETS_REPO_URL= "https://github.com/oldfart-maker/hm-dell-arch-laptop.git"
+SECRETS_REPO_URL="https://github.com:oldfart-maker/sys-secrets.git"
 SECRETS_DIR="${PROJECTS_DIR}/sys-secrets"
 
 echo
