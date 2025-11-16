@@ -9,10 +9,10 @@ config.font_size = 9
 config.default_prog = {'/usr/bin/fish', '-l'}
 
 -- Font settings
-config.font = wezterm.font_with_fallback({
-  { family = "JetBrainsMono", weight = "Regular" },
-  { family = "FiraCode",      weight = "Regular" }, "Noto Sans Mono",
-})
+-- config.font = wezterm.font_with_fallback({
+--   { family = "JetBrainsMono", weight = "Regular" },
+--   { family = "FiraCode",      weight = "Regular" }, "Noto Sans Mono",
+-- })
 
 config.font_size = 10.0
 

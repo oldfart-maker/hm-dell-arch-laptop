@@ -1,5 +1,10 @@
 SYSTEM INSTALL
 
+* Step 0 - Tangle emacs/niri configs
+a) cd ~/projects/hm-dell-arch-laptop/home/scripts
+b) ./tangle-synch.sh
+
+***
 * Step 1 - Create archlinux iso
 
 Creat archlinux iso using balena (Download from archlinux.org/downloads)
