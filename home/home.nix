@@ -19,6 +19,8 @@
     ./modules/core/fastfetch.nix
     ./modules/core/wallpaper.nix
     ./modules/core/dev-tools.nix
+    ./modules/core/rclone.nix
+    ./modules/core/rclone-officesync.nix
 
     ./modules/apps/mako.nix
     ./modules/apps/emacs.nix
