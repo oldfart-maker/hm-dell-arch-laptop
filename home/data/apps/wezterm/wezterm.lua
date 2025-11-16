@@ -6,7 +6,7 @@ local config = wezterm.config_builder()
 config.initial_cols = 120
 config.initial_rows = 28
 config.font_size = 9
-config.default_prog = {'/usr/bin/fish', '-l'}
+config.default_prog = {'fish', '-l'}
 
 -- Font settings
 -- config.font = wezterm.font_with_fallback({
