@@ -6,7 +6,8 @@ Mod+Shift+D                                        Show Active Windows
 Mod+E                                              Emacs - Prod
 Mod+P                                              Scratchpad Put
 Mod+Shift+P                                        Scratchpad Get
-Mod+Return                                         Terminal
+Mod+Return                                         Terminal - Foot
+Mod+Shift+Return                                   Terminal - Wezterm
 Mod+T                                              Change Wallpaper
 Mod+S                                              Screenshot
 Mod+O repeat=false                                 Toggle Overview
@@ -55,5 +56,3 @@ XF86AudioRaiseVolume allow-when-locked=true        Vol+
 XF86AudioLowerVolume allow-when-locked=true        Vol-
 XF86AudioMute allow-when-locked=true               Mute
 XF86AudioMicMute allow-when-locked=true            Mic Mute
-XF86MonBrightnessUp allow-when-locked=true         Brightness Up
-XF86MonBrightnessDown allow-when-locked=true       Brightness Down
