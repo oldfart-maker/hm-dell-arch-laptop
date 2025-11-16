@@ -16,5 +16,6 @@
     python3
     jq
     git
+    rsync
   ];
 }
