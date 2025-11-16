@@ -24,8 +24,9 @@
 
     ./modules/apps/mako.nix
     ./modules/apps/emacs.nix
-    ./modules/apps/qutebrowser.nix
     ./modules/apps/bitwarden.nix
+    ./modules/apps/qutebrowser.nix
+    ./modules/apps/libreoffice.nix
     ./modules/apps/dankmaterialshell.nix
     
     ./modules/wm/niri/niri.nix
