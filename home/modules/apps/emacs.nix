@@ -15,6 +15,7 @@ let
   # sys-secrets location on the TARGET (synced in target-setup.sh)
   secretsRoot   = "${config.home.homeDirectory}/projects/sys-secrets";
   apiKeysSource = "${secretsRoot}/emacs/api-keys.el";
+  mkSecret    = config.lib.file.mkOutOfStoreSymlink;  
 in
 {
   home.packages = [ emacsPkg ];
@@ -23,7 +24,7 @@ in
   home.file."${emacsCommonDir}/.keep".text = "";
 
   # api-keys.el from sys-secrets → ~/.config/emacs-common/api-keys.el
-    home.file."${emacsCommonDir}/api-keys.el".source =
+  home.file."${emacsCommonDir}/api-keys.el".source =
     mkSecret "${secretsRoot}/emacs/api-keys.el";
   
   home.file."${emacsDir}/early-init.el".source    = srcEarly;

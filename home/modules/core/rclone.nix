@@ -3,6 +3,7 @@
 
 let
   secretsRoot = "${config.home.homeDirectory}/projects/sys-secrets";
+  mkSecret    = config.lib.file.mkOutOfStoreSymlink;  
 in
 {
   home.packages = [ pkgs.rclone ];
