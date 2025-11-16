@@ -21,6 +21,7 @@
     ./modules/core/dev-tools.nix
     ./modules/core/rclone.nix
     ./modules/core/rclone-officesync.nix
+    ./modules/core/wezterm.nix
 
     ./modules/apps/mako.nix
     ./modules/apps/emacs.nix
