@@ -143,10 +143,10 @@ echo "-> Creating local directories"
 mkdir -p "$HOME/.config/emacs-common" "$HOME/Pictures/wallpapers"
 
 # -------------------------------------------------------------------
-# Step 1 - Install Nix (no-daemon) if missing
+# Install Nix (no-daemon) if missing
 # -------------------------------------------------------------------
 echo
-echo "-> Step 1: Installing Nix (no-daemon) if not already installed"
+echo "Installing Nix (no-daemon) if not already installed"
 if command -v nix >/dev/null 2>&1; then
   echo "nix already present; skipping installer"
 else
@@ -163,10 +163,10 @@ else
 fi
 
 # -------------------------------------------------------------------
-# Step 2 - Home Manager install via channel
+# Home Manager install via channel
 # -------------------------------------------------------------------
 echo
-echo "-> Step 2: Setting up Home Manager channel and installing"
+echo "Setting up Home Manager channel and installing"
 if ! nix-channel --list | grep -q "home-manager"; then
   nix-channel --add https://github.com/nix-community/home-manager/archive/master.tar.gz home-manager
 fi
@@ -174,10 +174,10 @@ nix-channel --update
 nix-shell '<home-manager>' -A install || echo "Warning: home-manager install returned non-zero status"
 
 # -------------------------------------------------------------------
-# Step 3 - Enable flakes and nix-command
+# Enable flakes and nix-command
 # -------------------------------------------------------------------
 echo
-echo "-> Step 3: Enabling flakes and nix-command"
+echo "Enabling flakes and nix-command"
 mkdir -p "${HOME}/.config/nix"
 printf "experimental-features = nix-command flakes\n" > "${HOME}/.config/nix/nix.conf"
 if [[ -f "${HOME}/.nix-profile/etc/profile.d/nix.sh" ]]; then
@@ -187,10 +187,10 @@ fi
 hash -r
 
 # -------------------------------------------------------------------
-# Step 3.1 - Install nixGL for Wayland compatibility
+#  Install nixGL for Wayland compatibility
 # -------------------------------------------------------------------
 echo
-echo "-> Step 3.1: Installing nixGL via channel"
+echo "Installing nixGL via channel"
 if ! nix-channel --list | grep -q "nixgl"; then
   nix-channel --add https://github.com/nix-community/nixGL/archive/main.tar.gz nixgl
 fi
@@ -198,10 +198,36 @@ nix-channel --update
 nix-env -iA nixgl.auto.nixGLDefault || echo "Warning: nix-env -iA nixgl.auto.nixGLDefault failed"
 
 # -------------------------------------------------------------------
-# Step 4 - home-manager switch via flake
+# Sync sys-secrets repo from host to target
 # -------------------------------------------------------------------
 echo
-echo "-> Step 4: Running home-manager switch via flake"
+echo "Syncing ~/projects/sys-secrets from host to target"
+
+REMOTE_SECRETS_DIR="~/projects/sys-secrets"
+LOCAL_PROJECTS_DIR="${HOME}/projects"
+LOCAL_SECRETS_DIR="${LOCAL_PROJECTS_DIR}/sys-secrets"
+
+mkdir -p "${LOCAL_PROJECTS_DIR}"
+
+if [[ -d "${LOCAL_SECRETS_DIR}/.git" ]]; then
+  echo "sys-secrets already exists at ${LOCAL_SECRETS_DIR}; updating from host (overwrite with scp -r)"
+else
+  echo "sys-secrets not found locally; initial copy from host"
+fi
+
+# Copy the sys-secrets directory recursively from host -> target.
+# This brings over the working tree (and .git), which is fine for now.
+if run_scp -r "${HOST_USER}@${HOST_IP}:${REMOTE_SECRETS_DIR}" "${LOCAL_PROJECTS_DIR}/"; then
+  echo "sys-secrets synced to ${LOCAL_SECRETS_DIR}"
+else
+  echo "Warning: failed to sync sys-secrets from ${HOST_USER}@${HOST_IP}:${REMOTE_SECRETS_DIR}"
+fi
+
+# -------------------------------------------------------------------
+# home-manager switch via flake
+# -------------------------------------------------------------------
+echo
+echo "Running home-manager switch via flake"
 FLAKE_REF="github:oldfart-maker/hm-dell-arch-laptop#username"
 if command -v nix >/dev/null 2>&1; then
   nix run nixpkgs#home-manager -- switch --flake "${FLAKE_REF}" -v --refresh || {
@@ -212,16 +238,16 @@ else
 fi
 
 # -------------------------------------------------------------------
-# Step 5 - SKIPPED (vterm-shell)
+# SKIPPED (vterm-shell)
 # -------------------------------------------------------------------
 echo
-echo "-> Step 5: SKIPPED (you will set vterm-shell in Emacs manually)"
+echo "SKIPPED (you will set vterm-shell in Emacs manually)"
 
 # -------------------------------------------------------------------
-# Step 6 - Prime wallpapers from arch-wallpapers/png
+# Prime wallpapers from arch-wallpapers/png
 # -------------------------------------------------------------------
 echo
-echo "-> Step 6: Cloning arch-wallpapers and moving all *.png into ~/Pictures/wallpapers"
+echo "Cloning arch-wallpapers and moving all *.png into ~/Pictures/wallpapers"
 TMP_DIR="$(mktemp -d)"
 pushd "$TMP_DIR" >/dev/null
 
@@ -249,35 +275,7 @@ popd >/dev/null
 rm -rf "$TMP_DIR"
 
 # -------------------------------------------------------------------
-# Step 7 - Sync sys-secrets repo from host to target
-# -------------------------------------------------------------------
-echo
-echo "-> Step 7: Syncing ~/projects/sys-secrets from host to target"
-
-REMOTE_SECRETS_DIR="~/projects/sys-secrets"
-LOCAL_PROJECTS_DIR="${HOME}/projects"
-LOCAL_SECRETS_DIR="${LOCAL_PROJECTS_DIR}/sys-secrets"
-
-mkdir -p "${LOCAL_PROJECTS_DIR}"
-
-if [[ -d "${LOCAL_SECRETS_DIR}/.git" ]]; then
-  echo "sys-secrets already exists at ${LOCAL_SECRETS_DIR}; updating from host (overwrite with scp -r)"
-else
-  echo "sys-secrets not found locally; initial copy from host"
-fi
-
-# Copy the sys-secrets directory recursively from host -> target.
-# This brings over the working tree (and .git), which is fine for now.
-if run_scp -r "${HOST_USER}@${HOST_IP}:${REMOTE_SECRETS_DIR}" "${LOCAL_PROJECTS_DIR}/"; then
-  echo "sys-secrets synced to ${LOCAL_SECRETS_DIR}"
-else
-  echo "Warning: failed to sync sys-secrets from ${HOST_USER}@${HOST_IP}:${REMOTE_SECRETS_DIR}"
-fi
-
-# -------------------------------------------------------------------
 # Finish
 # -------------------------------------------------------------------
 echo
 echo "=== Finished target-setup.sh ==="
-echo "Steps completed: 1,2,3,3.1,4,6,7 (5 skipped intentionally)."
-echo "sshd should now be enabled; you can monitor this target from the host."
