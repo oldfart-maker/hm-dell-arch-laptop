@@ -1,5 +1,5 @@
 # home/modules/rclone.nix
-{ config, pkgs,lib, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   secretsRoot = "${config.home.homeDirectory}/projects/sys-secrets";
