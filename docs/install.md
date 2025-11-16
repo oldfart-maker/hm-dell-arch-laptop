@@ -34,9 +34,8 @@ e) ./bootstrap.sh
 a) mkdir -p ~/projects
 b) cd ~/projects
 c) git clone https://github.com/oldfart-maker/hm-dell-arch-laptop.git
-d) git clone https://github.com/oldfart-maker/sys-secrets.git
-d) cd ~/projects/hm-dell-arch-laptop/tools
-e) chmod +x target-setup.sh
-
-f) ./target-setup.sh
-g) rm -rf hm-dell-arch-laptop
+c) git clone https://github.com/oldfart-maker/sys-secrets.git
+e) cd ~/projects/hm-dell-arch-laptop/tools
+f) chmod +x target-setup.sh
+g) ./target-setup.sh
+h) rm -rf hm-dell-arch-laptop
