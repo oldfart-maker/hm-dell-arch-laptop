@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CONFIG_FILE="user_configuration.json"
-CREDS_FILE="user_credentials.json"
+CONFIG_FILE="user-configuration.json"
+CREDS_FILE="user-credentials.json"
 
 echo "=== bootstrap.sh: running archinstall ==="
 
