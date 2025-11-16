@@ -7,11 +7,10 @@ in
 {
   home.packages = [ pkgs.rclone ];
 
-  home.file.".config/rclone/rclone.conf" = {
-    source = "${secretsRoot}/rclone/rclone.conf";
-  };
+  home.file.".config/rclone/rclone.conf".source =
+    mkSecret "${secretsRoot}/rclone/rclone.conf";
 
-  home.file.".config/rclone/officesync.filter" = {
-    source = "${secretsRoot}/rclone/officesync.filter";
+  home.file.".config/rclone/officesync.filter".source =
+    mkSecret "${secretsRoot}/rclone/officesync.filter";    
   };
 }

@@ -23,7 +23,8 @@ in
   home.file."${emacsCommonDir}/.keep".text = "";
 
   # api-keys.el from sys-secrets → ~/.config/emacs-common/api-keys.el
-  home.file."${emacsCommonDir}/api-keys.el".source = apiKeysSource;
+    home.file."${emacsCommonDir}/api-keys.el".source =
+    mkSecret "${secretsRoot}/emacs/api-keys.el";
   
   home.file."${emacsDir}/early-init.el".source    = srcEarly;
   home.file."${emacsDir}/init.el".source          = srcInit;
