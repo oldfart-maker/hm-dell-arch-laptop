@@ -70,7 +70,7 @@ fi
 # --- Ensure sys-secrets repo is present --------------------------------------
 
 PROJECTS_DIR="${HOME}/projects"
-SECRETS_REPO_URL="https://github.com/oldfart-maker/sys-secrets.git"
+SECRETS_REPO_URL="git@github.com:oldfart-maker/sys-secrets.git"
 SECRETS_DIR="${PROJECTS_DIR}/sys-secrets"
 
 echo
@@ -81,7 +81,7 @@ echo
 echo "-> Ensuring sys-secrets repo is present"
 if [[ -d "${SECRETS_DIR}/.git" ]]; then
   echo "   Found existing sys-secrets; pulling latest from origin"
-  git clone "${SECRETS_DIR}" pull --ff-only || echo "Warning: git pull in sys-secrets failed"
+  git -C "${SECRETS_DIR}" pull --ff-only || echo "Warning: git pull in sys-secrets failed"
 else
   echo "   Cloning sys-secrets into ${SECRETS_DIR}"
   git clone "${SECRETS_REPO_URL}" "${SECRETS_DIR}"
