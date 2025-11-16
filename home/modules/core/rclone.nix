@@ -12,5 +12,4 @@ in
 
   home.file.".config/rclone/officesync.filter".source =
     mkSecret "${secretsRoot}/rclone/officesync.filter";    
-  };
 }
