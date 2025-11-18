@@ -1,8 +1,8 @@
-{ config, pkgs, repoDir, ... }:
+{ config, pkgs, repoPath, ... }:
 
 let
   homeDir = config.home.homeDirectory;
-  shellPath = repoDir + "home/apps/data/utils/trim-screenshots.sh";
+  shellPath = repoPath + "home/apps/data/utils/trim-screenshots.sh";
 in
 {
   home.file.".local/bin/trim-screenshots.sh" = {
