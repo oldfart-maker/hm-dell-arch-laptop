@@ -17,5 +17,6 @@
     jq
     git
     rsync
+    etcher
   ];
 }
