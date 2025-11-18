@@ -1,5 +1,11 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, repoPath, ... }:
 {
+  nixpkgs.overlays = [
+    (import (repoPath "home/modules/apps/pacseek-overlay.nix") {
+      inherit repoPath;
+    })
+  ];
+
   home.username = "username";
   home.homeDirectory = "/home/username";
   home.stateVersion = "24.05";
