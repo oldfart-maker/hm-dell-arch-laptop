@@ -17,6 +17,7 @@
     jq
     git
     rsync
-    etcher
+    pacseek
+    ventoy
   ];
 }
