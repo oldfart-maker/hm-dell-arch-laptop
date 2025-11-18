@@ -36,4 +36,4 @@ in
       WantedBy = [ "timers.target" ];
     };
   };
-};
+}
