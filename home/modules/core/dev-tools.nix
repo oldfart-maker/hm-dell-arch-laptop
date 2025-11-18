@@ -17,7 +17,6 @@
     jq
     git
     rsync
-    balena-etcher
     pacseek
   ];
 }
