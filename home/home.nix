@@ -1,7 +1,14 @@
 { config, pkgs, lib, repoPath, ... }:
 {
   nixpkgs = {
-    config.allowUnfree = true;
+    config = {
+      allowUnfree = true;
+
+      # explicitly allow this insecure package
+      permittedInsecurePackages = [
+        "ventoy-1.1.07"
+      ];
+    };
 
     overlays = [
       (import (repoPath "home/modules/apps/pacseek-overlay.nix") {
@@ -9,7 +16,7 @@
       })
     ];
   };
-
+  
   home.username = "username";
   home.homeDirectory = "/home/username";
   home.stateVersion = "24.05";
