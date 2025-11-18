@@ -11,7 +11,7 @@ in
       source = shellPath;
       executable = true;
     };
-  }
+  };
     
  systemd.user.services."trim-screenshots" = {
     Unit = {
