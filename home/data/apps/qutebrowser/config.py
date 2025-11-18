@@ -86,3 +86,6 @@ config.bind('<Ctrl-p>', 'completion-item-focus prev',   'command')
 # (optional) keep history on Alt+n / Alt+p
 config.bind('<Alt-n>',  'command-history-next',         'command')
 config.bind('<Alt-p>',  'command-history-prev',         'command')
+
+# Toggle dark mode
+config.bind(',d', "config-cycle colors.webpage.darkmode.enabled true false")
