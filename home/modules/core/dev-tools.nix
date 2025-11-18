@@ -17,5 +17,7 @@
     jq
     git
     rsync
+    balenaEtcher
+    pacseek
   ];
 }
