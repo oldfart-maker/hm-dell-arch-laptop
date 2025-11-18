@@ -6,7 +6,7 @@ let
 in
 {
   home.file = {
-    ".local/bin/trim-screenshots.sh" {
+    ".local/bin/trim-screenshots.sh" = {
       force = true;
       source = shellPath;
       executable = true;
