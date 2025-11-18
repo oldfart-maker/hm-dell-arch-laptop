@@ -5,7 +5,7 @@ let
   shellPath = repoDir + "home/apps/data/utils/trim-screenshots.sh";
 in
 {
-  home.file.".local/bin/trim-screenshots.sh" {
+  home.file.".local/bin/trim-screenshots.sh" = {
       force = true;
       source = shellPath;
       executable = true;
