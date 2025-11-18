@@ -17,6 +17,5 @@
     jq
     git
     rsync
-    pacseek
   ];
 }
