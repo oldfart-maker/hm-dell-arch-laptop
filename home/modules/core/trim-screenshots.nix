@@ -2,7 +2,7 @@
 
 let
   homeDir = config.home.homeDirectory;
-  shellPath = repoPath "home/apps/data/utils/trim-screenshots.sh";
+  shellPath = repoPath "home/data/apps/utils/trim-screenshots.sh";
 in
 {
   home.file.".local/bin/trim-screenshots.sh" = {
