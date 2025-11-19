@@ -8,10 +8,9 @@ pkgs.buildGoModule rec {
     owner  = "moson-mo";
     repo   = "pacseek";
     rev    = "v${version}";
-    sha256 = lib.fakeSha256;  # placeholder – we’ll fill the real hash in next step
+    sha256 = lib.fakeSha256;
   };
 
-  # Go modules hash – also start with a fake and let Nix tell us the real one
   vendorHash = lib.fakeSha256;
 
   ldflags = [ "-s" "-w" ];
