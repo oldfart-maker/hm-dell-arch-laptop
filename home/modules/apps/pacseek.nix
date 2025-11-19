@@ -16,6 +16,7 @@ pkgs.buildGoModule rec {
   # Needed for libalpm / alpm.h
   buildInputs = [
     pkgs.pacman
+    pkgs.libarchive
   ];
 
   # go-alpm uses `pkg-config: alpm` in its cgo flags
