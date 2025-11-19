@@ -15,7 +15,7 @@ pkgs.buildGoModule rec {
   };
 
 
-  vendorHash = "sha256-df6XIqdQJcx+Aesoh6+iXEWlKc/fbB2FZMK7v1S1ZF0=";
+  vendorHash = "sha256-8FUFzHrUXUZaZvrDF3y8MQ8UHoM3xNf9AEOGBuT1ycg=";
 
   ldflags = [ "-s" "-w" ];
 
