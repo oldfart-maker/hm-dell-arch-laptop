@@ -8,14 +8,20 @@ pkgs.buildGoModule rec {
     owner = "moson-mo";
     repo  = "pacseek";
     rev   = "v${version}";
-
-
     hash  = "sha256-df6XIqdQJcx+Aesoh6+iXEWlKc/fbB2FZMK7v1S1ZF0=";
-    
   };
 
-
   vendorHash = "sha256-8FUFzHrUXUZaZvrDF3y8MQ8UHoM3xNf9AEOGBuT1ycg=";
+
+  # Needed for libalpm / alpm.h
+  buildInputs = [
+    pkgs.pacman
+  ];
+
+  # go-alpm uses `pkg-config: alpm` in its cgo flags
+  nativeBuildInputs = [
+    pkgs.pkg-config
+  ];
 
   ldflags = [ "-s" "-w" ];
 
