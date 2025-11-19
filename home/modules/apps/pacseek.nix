@@ -5,13 +5,16 @@ pkgs.buildGoModule rec {
   version = "1.8.5";
 
   src = pkgs.fetchFromGitHub {
-    owner  = "moson-mo";
-    repo   = "pacseek";
-    rev    = "v${version}";
-    sha256 = lib.fakeSha256;
+    owner = "moson-mo";
+    repo  = "pacseek";
+    rev   = "v${version}";
+
+    # TEMPORARY dummy hash – we'll replace after Nix tells us the real one
+    hash  = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
   };
 
-  vendorHash = lib.fakeSha256;
+  # TEMPORARY dummy vendor hash – also replaced after first build
+  vendorHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
 
   ldflags = [ "-s" "-w" ];
 
