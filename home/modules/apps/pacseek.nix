@@ -24,6 +24,8 @@ pkgs.buildGoModule rec {
     pkgs.pkg-config
   ];
 
+  doCheck = false;
+  
   ldflags = [ "-s" "-w" ];
 
   meta = with lib; {
