@@ -9,12 +9,13 @@ pkgs.buildGoModule rec {
     repo  = "pacseek";
     rev   = "v${version}";
 
-    # TEMPORARY dummy hash – we'll replace after Nix tells us the real one
-    hash  = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+
+    hash  = "sha256-df6XIqdQJcx+Aesoh6+iXEWlKc/fbB2FZMK7v1S1ZF0=";
+    
   };
 
-  # TEMPORARY dummy vendor hash – also replaced after first build
-  vendorHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+
+  vendorHash = "sha256-df6XIqdQJcx+Aesoh6+iXEWlKc/fbB2FZMK7v1S1ZF0=";
 
   ldflags = [ "-s" "-w" ];
 
