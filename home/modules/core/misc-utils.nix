@@ -19,5 +19,6 @@
     rsync
     pacseek
     ventoy
+    simple-scan
   ];
 }
