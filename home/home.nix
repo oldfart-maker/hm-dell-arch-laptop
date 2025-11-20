@@ -35,7 +35,7 @@
     ./modules/core/fish.nix
     ./modules/core/fastfetch.nix
     ./modules/core/wallpaper.nix
-    ./modules/core/dev-tools.nix
+    ./modules/core/misc-utils.nix
     ./modules/core/rclone.nix
     ./modules/core/rclone-officesync.nix
     ./modules/core/wezterm.nix
