@@ -45,9 +45,6 @@ config.bind('<Shift-Down>', 'tab-next')
 config.bind('<Shift-Up>', 'tab-prev')
 config.bind('<Shift-Right>', 'forward')
 
-# Load theme
-config.source('gruvbox.py')
-
 # Insert movement (Emacs style)
 config.bind('<Ctrl+b>', 'fake-key <left>', 'insert')   # back
 config.bind('<Ctrl+f>', 'fake-key <right>', 'insert')  # forward
@@ -89,3 +86,26 @@ config.bind('<Alt-p>',  'command-history-prev',         'command')
 
 # Toggle dark mode
 config.bind(',d', "config-cycle colors.webpage.darkmode.enabled true false")
+
+# Load theme (Keep all theme options at the bottom of this config.)
+config.source('gruvbox.py')
+
+# Tab bar background (behind all tabs)
+c.colors.tabs.bar.bg = "#282828"   # gruvbox bg
+
+# Active tab (selected)
+c.colors.tabs.selected.odd.bg = "#d79921"   # muted gruvbox yellow
+c.colors.tabs.selected.even.bg = "#d79921"
+c.colors.tabs.selected.odd.fg = "#282828"   # dark text for contrast
+c.colors.tabs.selected.even.fg = "#282828"
+
+# Inactive tabs
+c.colors.tabs.odd.bg = "#3c3836"   # gruvbox dark1
+c.colors.tabs.even.bg = "#3c3836"
+c.colors.tabs.odd.fg = "#bdae93"   # muted light fg
+c.colors.tabs.even.fg = "#bdae93"
+
+# Optional: indicator (loading line on tabs)
+c.colors.tabs.indicator.start = "#d79921"
+c.colors.tabs.indicator.stop = "#d79921"
+c.colors.tabs.indicator.error = "#fb4934"   # gruvbox red
