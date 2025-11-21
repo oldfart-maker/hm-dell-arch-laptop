@@ -10,7 +10,7 @@ config.default_prog = {'fish', '-l'}
 
 -- Font settings
 config.font = wezterm.font_with_fallback({
- { family = "JetBrains", weight = "Regular" }, "Noto Sans Mono"
+ { family = "JetBrains Mono", weight = "Regular" }, "Noto Sans Mono"
 })
 
 config.font_size = 10.0
