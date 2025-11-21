@@ -31,16 +31,18 @@ b) cd ~/projects
 c) git clone https://github.com/oldfart-maker/hm-dell-arch-laptop.git
 d) cd /projects/hm-dell-arch-laptop/tools
 e) ./bootstrap.sh
+f) reboot (remove usb drive)
 # 
 
 ***
 * Step 4 - Run setup
 
-a) mkdir -p ~/projects
-b) cd ~/projects
-c) git clone https://github.com/oldfart-maker/hm-dell-arch-laptop.git
-c) git clone https://github.com/oldfart-maker/sys-secrets.git
-e) cd ~/projects/hm-dell-arch-laptop/tools
-f) chmod +x target-setup.sh
-g) ./target-setup.sh
-h) rm -rf hm-dell-arch-laptop
+a) Connect to network
+b) mkdir -p ~/projects
+c) cd ~/projects
+d) git clone https://github.com/oldfart-maker/hm-dell-arch-laptop.git
+e) git clone https://github.com/oldfart-maker/sys-secrets.git
+f) cd ~/projects/hm-dell-arch-laptop/tools
+g) chmod +x target-setup.sh
+h) ./target-setup.sh
+i) rm -rf hm-dell-arch-laptop
