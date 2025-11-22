@@ -1,4 +1,4 @@
-{ config, pkgs, repoPath, ... }:
+f{ config, pkgs, repoPath, ... }:
 
 let
   homeDir = config.home.homeDirectory;
@@ -24,7 +24,7 @@ in
     };
   };
 
-  systemd.user.timers."trim-screenshot" = {
+  systemd.user.timers."trim-screenshots" = {
     Unit = {
       Description = "Run trim-screenshots every 30 minutes";
     };
