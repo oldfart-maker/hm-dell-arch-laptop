@@ -1,4 +1,4 @@
-f{ config, pkgs, repoPath, ... }:
+{ config, pkgs, repoPath, ... }:
 
 let
   homeDir = config.home.homeDirectory;
