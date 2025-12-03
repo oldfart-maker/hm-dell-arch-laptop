@@ -13,8 +13,6 @@ config.font = wezterm.font_with_fallback({
  { family = "JetBrains Mono", weight = "Regular" }, "Noto Sans Mono"
 })
 
-config.font_size = 10.0
-
 config.color_scheme = "nordfox"
 
 return config

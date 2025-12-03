@@ -1,4 +1,4 @@
-SYSTEM INSTALL
+dSYSTEM INSTALL
 
 * Step 0 - Tangle emacs/niri configs
 a) cd ~/projects/hm-dell-arch-laptop/home/scripts
