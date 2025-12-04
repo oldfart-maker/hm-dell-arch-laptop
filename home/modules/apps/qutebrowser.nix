@@ -12,6 +12,13 @@ let
 
   cfgPath  = repoPath "home/data/apps/qutebrowser/config.py";
   themePath = repoPath "home/data/apps/qutebrowser/gruvbox.py";
+
+  # pdf.js install for to view pdf's in qutebrowser natively
+  pdfjs = pkgs.fetchzip {
+    url       = "https://github.com/mozilla/pdf.js/releases/download/v4.2.67/pdfjs-4.2.67-dist.zip";
+    hash      = "sha256-7kfT3+ZwoGqZ5OwkO9h3DIuBFd0v8fRlcufxoBdcy8c=";
+    stripRoot = false;
+  };  
   
 in {  
   programs.qutebrowser = {
@@ -22,7 +29,9 @@ in {
 
   home.file.".config/qutebrowser/gruvbox.py".source    = themePath;
 
- # This is the .desktop entry
+  xdg.dataFile."qutebrowser/pdfjs".source = pdfjs;
+
+   # This is the .desktop entry
   xdg.desktopEntries.qutebrowser-wayland = {
     name = "Qutebrowser (Wayland + nixGL)";
     genericName = "Web Browser";
