@@ -12,6 +12,7 @@ let
 
   cfgPath  = repoPath "home/data/apps/qutebrowser/config.py";
   themePath = repoPath "home/data/apps/qutebrowser/gruvbox.py";
+  quickMarksPath = repoPath "home/data/apps/qutebrowser/quickmarks";
 
   # pdf.js install for to view pdf's in qutebrowser natively
   pdfjs = pkgs.fetchzip {
@@ -28,6 +29,7 @@ in {
   };
 
   home.file.".config/qutebrowser/gruvbox.py".source    = themePath;
+  home.file.".config/qutebrowser/quickmarks".source    = quickMarksPath;  
 
   xdg.dataFile."qutebrowser/pdfjs".source = pdfjs;
 
