@@ -40,6 +40,7 @@
     ./modules/core/rclone-officesync.nix
     ./modules/core/wezterm.nix
     ./modules/core/trim-screenshots.nix
+    ./modules/core/avahi.nix
 
     ./modules/apps/mako.nix
     ./modules/apps/emacs.nix
