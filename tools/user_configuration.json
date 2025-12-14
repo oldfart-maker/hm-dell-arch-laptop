@@ -97,7 +97,8 @@
         "git",
         "reflector",
         "xwayland-satellite",
-        "sshpass"
+	"avahi",
+	"nss-mdns"
     ],
     "parallel_downloads": 0,
     "profile_config": {
