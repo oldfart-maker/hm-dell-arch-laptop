@@ -148,7 +148,7 @@ setup_avahi_in_target() {
 
   # source / target locations
   local nsswitch_src nsswitch_tgt
-  nsswitch_src="$REPO_ROOT/home/apps/data/avahi/nsswitch.conf"
+  nsswitch_src="$REPO_ROOT/home/data/apps/avahi/nsswitch.conf"
   nsswitch_tgt="$TARGET_MNT/etc/nsswitch.conf"
 
   local sshservice_src sshservice_tgt
