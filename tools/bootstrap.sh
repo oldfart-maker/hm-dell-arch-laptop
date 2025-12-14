@@ -194,7 +194,7 @@ setup_ssh_in_target() {
 
   # Install packages into the target system (idempotent)
   if [[ "$MODE" == "post-only" ]]; then
-      arch-chroot "$TARGET_MNT" pacman --noconfirm -S --needed sshd
+      arch-chroot "$TARGET_MNT" pacman --noconfirm -S --needed openssh
   fi
 
   # Enable the systemd service (will start on first boot)
