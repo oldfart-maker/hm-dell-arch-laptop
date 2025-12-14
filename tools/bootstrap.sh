@@ -209,6 +209,7 @@ post_install() {
   echo "=== bootstrap.sh: running post-install configuration ==="
   ensure_target_mounted
   setup_avahi_in_target
+  setup_ssh_in_target
 }
 
 main() {
