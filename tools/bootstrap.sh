@@ -171,11 +171,38 @@ setup_avahi_in_target() {
   arch-chroot "$TARGET_MNT" systemctl enable avahi-daemon.service
 
   # Install configuration files
-  echo "Installing managed /etc/nsswitch.conf from: $nsswitch_src"
+  echo "Installing nsswitch.conf from: $nsswitch_src"
   install -m 644 "$nsswitch_src" "$nsswitch_tgt"
 
-  echo "Installing managed avahi service from: $sshservice_src"
+  echo "Installing ssh.service from: $sshservice_src"
   install -m 644 "$sshservice_src" "$sshservice_tgt"
+}
+
+setup_ssh_in_target() {
+  echo "=== bootstrap.sh: setting up ssh in target ==="
+
+  # source / target locations
+  local sshconfig_src sshconfig_tgt
+  sshconfig_src="$REPO_ROOT/home/data/apps/ssh/conf"
+  sshconfig_tgt="$TARGET_MNT~/.ssh/conf"
+
+  # ensure source files exist
+  [[ -f "$sshconfig_src" ]] || die "ssh config not found at: $sshconfig_src"
+
+  # ensure target dirs exist
+  mkdir -p "$TARGET_MNT~/.ssh"
+
+  # Install packages into the target system (idempotent)
+  if [[ "$MODE" == "post-only" ]]; then
+      arch-chroot "$TARGET_MNT" pacman --noconfirm -S --needed sshd
+  fi
+
+  # Enable the systemd service (will start on first boot)
+  arch-chroot "$TARGET_MNT" systemctl enable sshd.service
+
+  # Install configuration files
+  echo "Installing ssh config from: $sshconfig_src"
+  install -m 644 "$sshconfig_src" "$sshconfig_tgt"
 }
 
 post_install() {
