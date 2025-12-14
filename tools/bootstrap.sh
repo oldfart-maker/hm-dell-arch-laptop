@@ -183,8 +183,8 @@ setup_ssh_in_target() {
 
   # source / target locations
   local sshconfig_src sshconfig_tgt
-  sshconfig_src="$REPO_ROOT/home/data/apps/ssh/conf"
-  sshconfig_tgt="$TARGET_MNT~/.ssh/conf"
+  sshconfig_src="$REPO_ROOT/home/data/apps/ssh/config"
+  sshconfig_tgt="$TARGET_MNT~/.ssh/config"
 
   # ensure source files exist
   [[ -f "$sshconfig_src" ]] || die "ssh config not found at: $sshconfig_src"
