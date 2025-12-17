@@ -47,5 +47,5 @@ in
        cp -f "${seedFile}" "${cfgDir}/settings.json"
        chmod u+rw "${cfgDir}/settings.json"
     fi
-    '':
+   '';
   }
