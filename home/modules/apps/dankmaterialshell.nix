@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, repoPath, config, lib, ... }:
 
 let
   # Upstream installer archive (gzipped)
@@ -8,6 +8,10 @@ let
   # Use the sha256 published by the project (or from nix-prefetch-url)
   # Example placeholder:
   dankInstallSha256 = "sha256:e017b2b0df7b720bf12661bbdbaba44eac61d7c09797a671f40c4f619ec59ae9";
+
+  cfgDir  = "${config.xdg.configHome}/DankMaterialShell";
+  seedFile  = repoPath "home/data/apps/dankmaterialshell/settings.json";
+  
 in
 {
   home.packages = [
@@ -34,4 +38,14 @@ in
       chmod +x $out/bin/dankmaterialshell
     '')
   ];
-}
+
+  home.activation.seedDankMaterialShellSettings =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    set -euo pipefail
+    mkdir -p "${cfgDir}"
+    if [ ! -s "${cfgDir}/settings.json" ]; then
+       cp -f "${seedFile}" "${cfgDir}/settings.json"
+       chmod u+rw "${cfgDir}/settings.json"
+    fi
+    '':
+  }

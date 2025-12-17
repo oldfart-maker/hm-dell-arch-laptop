@@ -38,6 +38,7 @@ f) reboot (remove usb drive)
 * Step 4 - Run setup
 
 a) Connect to network
+a.a) ssh dell (if possible to use ssh)
 b) mkdir -p ~/projects
 c) cd ~/projects
 d) git clone https://github.com/oldfart-maker/hm-dell-arch-laptop.git
